@@ -1,6 +1,8 @@
-﻿namespace Project_mangment_system.Repositories
+﻿using Project_management_system.Models;
+
+namespace Project_management_system.Repositories
 {
-    public class BaseRepository
+    public class BaseRepository<T>:IBaseRepository<T> where T :BaseModel
     {
     }
 }

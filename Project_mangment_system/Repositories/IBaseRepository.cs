@@ -1,6 +1,6 @@
-﻿namespace Project_mangment_system.Repositories
+﻿namespace Project_management_system.Repositories
 {
-    public interface IBaseRepository
+    public interface IBaseRepository<T>
     {
     }
 }

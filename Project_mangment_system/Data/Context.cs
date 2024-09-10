@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Project_mangment_system.Models;
+using Project_management_system.Models;
 
-namespace Project_mangment_system.Data
+namespace Project_management_system.Data
 {
     public class Context:DbContext
     {

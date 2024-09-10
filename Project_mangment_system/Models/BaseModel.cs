@@ -1,4 +1,4 @@
-﻿namespace Project_mangment_system.Models
+﻿namespace Project_management_system.Models
 {
     public class BaseModel
     {

@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>true</InvariantGlobalization>
+    <InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,13 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\" />
+    <Folder Include="CQRS\User\Commands\" />
+    <Folder Include="CQRS\User\Queries\" />
+    <Folder Include="DTO\UserDTOs\" />
     <Folder Include="Middelwares\" />
-    <Folder Include="Helpers\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="DTO\" />
-    <Folder Include="Profiles\" />
-    <Folder Include="ViewModels\" />
+    <Folder Include="ViewModels\UserVMs\" />
   </ItemGroup>
 
 </Project>

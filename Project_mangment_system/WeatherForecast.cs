@@ -1,4 +1,4 @@
-namespace Project_mangment_system
+namespace Project_management_system
 {
     public class WeatherForecast
     {
