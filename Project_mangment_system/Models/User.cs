@@ -16,5 +16,6 @@ namespace Project_management_system.Models
         public string ImageURL { get; set; }
         [Required]
         public string Country { get; set; }
+        public bool IsVerified { get; set; }
     }
 }
