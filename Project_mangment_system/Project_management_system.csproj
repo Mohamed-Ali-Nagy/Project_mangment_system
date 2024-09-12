@@ -26,12 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\User\Commands\" />
     <Folder Include="CQRS\User\Queries\" />
-    <Folder Include="DTO\UserDTOs\" />
     <Folder Include="Middelwares\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="ViewModels\UserVMs\" />
   </ItemGroup>
 
 </Project>

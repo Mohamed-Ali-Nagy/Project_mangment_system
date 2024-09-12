@@ -2,7 +2,7 @@
 
 namespace Project_management_system.Models
 {
-    public class User:BaseModel
+    public class User : BaseModel
     {
         [Required]
         public string Name { get; set; }
