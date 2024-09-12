@@ -11,6 +11,8 @@ namespace Project_management_system.Models
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
+        public string? Otp { get; set; }
+        public DateTime? PasswordResetExpiry { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
         public string ImageURL { get; set; }

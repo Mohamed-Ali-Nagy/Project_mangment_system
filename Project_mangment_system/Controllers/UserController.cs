@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Project_management_system.CQRS.User.Commands;
 
 namespace Project_management_system.Controllers
 {
@@ -6,15 +8,22 @@ namespace Project_management_system.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        public UserController()
-        {
+        private readonly IMediator _mediator;
 
+        public UserController(IMediator mediator)
+        {
+            _mediator = mediator;
         }
 
-        [HttpPost]
-        public IActionResult ResetPassword()
+        [HttpPost("reset")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
         {
-            return Ok();
+            var result = await _mediator.Send(command);
+            if (result)
+            {
+                return Ok("Password has been reset successfully.");
+            }
+            return BadRequest("Invalid token or error resetting password.");
         }
     }
 }
