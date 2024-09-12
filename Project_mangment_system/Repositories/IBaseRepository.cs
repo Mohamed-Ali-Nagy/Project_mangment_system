@@ -1,12 +1,12 @@
-﻿using Project_management_system.Models;
+﻿using System.Linq.Expressions;
 
 namespace Project_management_system.Repositories
 {
     public interface IBaseRepository<T>
     {
-        Task<User?> GetByEmailAsync(string email);
-        Task SaveOtpAsync(Guid userId, string otp);
-        Task<bool> ValidateOtpAsync(Guid userId, string otp);
-        Task UpdatePasswordAsync(User user);
+        IQueryable<T> GetAll();
+        IQueryable<T> Get(Expression<Func<T, bool>> predicate);
+        void Update(T entity);
+        void SaveChanges();
     }
 }

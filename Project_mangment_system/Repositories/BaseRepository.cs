@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Project_management_system.Data;
+﻿using Project_management_system.Data;
 using Project_management_system.Models;
+using System.Linq.Expressions;
 
 namespace Project_management_system.Repositories
 {
@@ -13,22 +13,20 @@ namespace Project_management_system.Repositories
             _context = context;
         }
 
-        public async Task<User?> GetByEmailAsync(string email)
-            => await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        public IQueryable<T> GetAll()
+            => _context.Set<T>().Where(e => !e.IsDeleted);
 
-        public Task SaveOtpAsync(Guid userId, string otp)
+        public IQueryable<T> Get(Expression<Func<T, bool>> predicate)
+             => GetAll().Where(predicate);
+
+        public void Update(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Update(entity);
         }
 
-        public Task UpdatePasswordAsync(User user)
+        public void SaveChanges()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> ValidateOtpAsync(Guid userId, string otp)
-        {
-            throw new NotImplementedException();
+            _context.SaveChanges();
         }
     }
 }
