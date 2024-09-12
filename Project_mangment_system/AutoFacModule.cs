@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Project_management_system.Services;
 
 namespace Project_management_system
 {
@@ -6,7 +7,7 @@ namespace Project_management_system
     {
         protected override void Load(ContainerBuilder builder)
         {
-            
+            builder.RegisterAssemblyTypes(typeof(IEmailService).Assembly).AsImplementedInterfaces().InstancePerLifetimeScope();
         }
     }
 }
