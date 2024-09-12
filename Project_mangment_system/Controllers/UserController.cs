@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Project_management_system.Controllers
 {
@@ -7,5 +6,15 @@ namespace Project_management_system.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        public UserController()
+        {
+
+        }
+
+        [HttpPost]
+        public IActionResult ResetPassword()
+        {
+            return Ok();
+        }
     }
 }
