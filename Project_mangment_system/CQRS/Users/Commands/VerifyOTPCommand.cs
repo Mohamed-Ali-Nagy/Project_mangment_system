@@ -28,7 +28,7 @@ namespace Project_management_system.CQRS.Users.Commands
             {
 
             }
-
+            return true;
         }
     }
 }
