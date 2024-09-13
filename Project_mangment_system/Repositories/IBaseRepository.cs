@@ -4,6 +4,9 @@ namespace Project_management_system.Repositories
 {
     public interface IBaseRepository<T>
     {
-        public IQueryable<T> GetAll();
+        IQueryable<T> GetAll();
+        IQueryable<T> Get(Expression<Func<T, bool>> predicate);
+        void Update(T entity);
+        void SaveChanges();
     }
 }
