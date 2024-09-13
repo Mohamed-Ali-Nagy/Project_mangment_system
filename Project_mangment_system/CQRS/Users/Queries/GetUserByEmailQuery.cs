@@ -12,8 +12,8 @@ namespace Project_management_system.CQRS.Users.Queries
     }
     public record GetUserByEmailHandler : IRequestHandler<GetUserByEmailQuery, UserDTO>
     {
-        private IBaseRepository<User> _userRepository;
-        public GetUserByEmailHandler(IBaseRepository<User> userRepository)
+        private IBaseRepository<Models.User> _userRepository;
+        public GetUserByEmailHandler(IBaseRepository<Models.User> userRepository)
         {
             _userRepository = userRepository;
         }

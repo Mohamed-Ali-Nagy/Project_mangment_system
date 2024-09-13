@@ -9,13 +9,8 @@ using Project_management_system;
 using Project_management_system.Data;
 using Project_management_system.DTO.UserDTOs;
 using Project_management_system.Helpers;
-using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Project_management_system.Profiles;
 using System.Text;
-using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
