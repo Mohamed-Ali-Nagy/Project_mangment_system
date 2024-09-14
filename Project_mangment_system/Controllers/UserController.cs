@@ -37,5 +37,16 @@ namespace Project_management_system.Controllers
             }
             return Ok(ResultVM<bool>.Sucess(true, "email verified successfully"));
         }
+
+        [HttpGet("ForgetPassword")]
+        public async Task<IActionResult>ForgetPassword(string email)
+        {
+           var result= await  _mediator.Send(new  ForgetPasswordCommand(email));
+            if(!result)
+            {
+                return BadRequest("Can not send otp to this email");
+            }
+            return Ok(ResultVM<bool>.Sucess(true, "An email sent with an otp"));
+        }
     }
 }
