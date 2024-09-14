@@ -3,5 +3,7 @@
     public enum ErrorCode
     {
         NoError=0,
+        WrongPasswordOrEmail =100,
+
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Project_management_system.Enums;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Project_management_system.Models
 {
@@ -16,5 +18,6 @@ namespace Project_management_system.Models
         public string ImageURL { get; set; }
         [Required]
         public string Country { get; set; }
+        public Collection<UserRole> UserRoles { get; set; }
     }
 }
