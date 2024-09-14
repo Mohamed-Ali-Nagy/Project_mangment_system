@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Project_management_system.CQRS.User.Commands;
+using Project_management_system.ViewModels;
 
 namespace Project_management_system.Controllers
 {
@@ -24,6 +25,17 @@ namespace Project_management_system.Controllers
                 return Ok("Password has been reset successfully.");
             }
             return BadRequest("Invalid token or error resetting password.");
+        }
+
+        [HttpGet("VerifyEmail")]
+        public async Task<IActionResult> VerifyEmail(string email, string otpCode)
+        {
+            var isVerified = await _mediator.Send(new VerifyOTPCommand(email, otpCode));
+            if (!isVerified)
+            {
+                return BadRequest("email is not verified");
+            }
+            return Ok(ResultVM<bool>.Sucess(true, "email verified successfully"));
         }
     }
 }

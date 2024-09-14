@@ -27,14 +27,14 @@ namespace Project_management_system.CQRS.User.Commands
             }
 
             var user = await _userRepository.Get(u => u.Email == request.Email).FirstOrDefaultAsync();
-            if (user is null || user.Otp != request.Otp || user.PasswordResetExpiry < DateTime.Now)
+            if (user is null || user.Otp != request.Otp || user.OtpExpiry < DateTime.Now)
             {
                 return false;
             }
 
             user.Password = _passwordHasher.HashPassword(user, request.NewPassword);
             user.Otp = null;
-            user.PasswordResetExpiry = null;
+            user.OtpExpiry = null;
 
             _userRepository.Update(user);
             _userRepository.SaveChanges();

@@ -12,7 +12,7 @@ namespace Project_management_system.Models
         [Required]
         public string Password { get; set; }
         public string? Otp { get; set; }
-        public DateTime? PasswordResetExpiry { get; set; }
+        public DateTime? OtpExpiry { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
         public string ImageURL { get; set; }
@@ -20,6 +20,5 @@ namespace Project_management_system.Models
         public string Country { get; set; }
         public bool IsVerified { get; set; }
 
-        public List<OTP> OTPs { get; set; }
     }
 }
