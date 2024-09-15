@@ -22,34 +22,6 @@ namespace Project_management_system.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Project_management_system.Models.OTP", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("OTPCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("OtpExpiry")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("OTPs");
-                });
-
             modelBuilder.Entity("Project_management_system.Models.User", b =>
                 {
                     b.Property<int>("ID")
@@ -80,6 +52,12 @@ namespace Project_management_system.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Otp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("OtpExpiry")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -91,22 +69,6 @@ namespace Project_management_system.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Project_management_system.Models.OTP", b =>
-                {
-                    b.HasOne("Project_management_system.Models.User", "User")
-                        .WithMany("OTPs")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Project_management_system.Models.User", b =>
-                {
-                    b.Navigation("OTPs");
                 });
 #pragma warning restore 612, 618
         }
