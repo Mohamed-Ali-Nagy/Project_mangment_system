@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Project_management_system.CQRS.Users.Commands;
 using Project_management_system.Enums;
@@ -13,20 +12,17 @@ namespace Project_management_system.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        IMapper _mapper;
-
         private readonly IMediator _mediator;
 
-        public UserController(IMediator mediator, IMapper mapper)
+        public UserController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
 
         [HttpPost("reset-password")]
         public async Task<ResultVM<bool>> ResetPassword([FromBody] ResetPasswordVM viewModel)
         {
-            var command = _mapper.Map<ResetPasswordCommand>(viewModel);
+            var command = MapperHelper.MapOne<ResetPasswordCommand>(viewModel);
             var result = await _mediator.Send(command);
             if (result)
             {
