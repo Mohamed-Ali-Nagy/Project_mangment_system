@@ -8,5 +8,7 @@
 
         //2000:3000 otp
         InvalidOTP = 3000,
+        WrongPasswordOrEmail =100,
+
     }
 }

@@ -9,6 +9,15 @@ using Project_management_system;
 using Project_management_system.Data;
 using Project_management_system.DTO.UserDTOs;
 using Project_management_system.Helpers;
+using AutoMapper;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Project_management_system.Services;
+using Autofac.Core;
+using Microsoft.AspNetCore.Identity;
+using Project_management_system.Models;
 using Project_management_system.Profiles;
 using System.Text;
 
@@ -58,6 +67,50 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+//builder.Services.AddMediatR(typeof(Program).Assembly);
+//MediatR
+builder.Services.AddMediatR(options =>
+{
+    options.RegisterServicesFromAssemblies(typeof(Program).Assembly);
+});
+
+
+
+
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    // Configure password options (simple configuration)
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequiredLength = 6;
+})
+.AddEntityFrameworkStores<Context>()
+.AddDefaultTokenProviders();
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = false;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!))
+    };
+});
+
 var app = builder.Build();
 
 MapperHelper.Mapper = app.Services.GetService<IMapper>();
@@ -70,6 +123,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthorization(); 
 
 app.UseAuthentication();
 

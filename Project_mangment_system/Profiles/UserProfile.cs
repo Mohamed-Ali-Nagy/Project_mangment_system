@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Project_management_system.CQRS.Users.Commands;
+using Project_management_system.ViewModels.UserVMs;
 using Project_management_system.DTO.UserDTOs;
 using Project_management_system.Models;
 
@@ -9,6 +11,7 @@ namespace Project_management_system.Profiles
         public UserProfile()
         {
             CreateMap<User, UserDTO>();
+            CreateMap<UserLoginVM, UserLoginDTO>();
         }
     }
 }
