@@ -9,25 +9,14 @@ namespace Project_management_system.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseModel
     {
-        private readonly Context _context;  
-        public BaseRepository(Context context)
-        {
-            _context = context; 
-        }
-        public  async Task<T> GetAsync(Expression<Func<T, bool>> predicate)
-        {
-            return  await _context.Set<T>().FirstOrDefaultAsync(predicate);
-        }
-
-        
-
-    public class BaseRepository<T> : IBaseRepository<T> where T : BaseModel
-    {
         private readonly Context _context;
-
         public BaseRepository(Context context)
         {
             _context = context;
+        }
+        public async Task<T> GetAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _context.Set<T>().FirstOrDefaultAsync(predicate);
         }
 
         public IQueryable<T> GetAll()
@@ -47,3 +36,4 @@ namespace Project_management_system.Repositories
         }
     }
 }
+

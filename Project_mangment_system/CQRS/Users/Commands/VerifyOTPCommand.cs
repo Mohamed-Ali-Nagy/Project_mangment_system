@@ -1,32 +1,31 @@
 ﻿using MediatR;
-using Project_management_system.CQRS.User.Queries;
 using Project_management_system.Enums;
 using Project_management_system.Exceptions;
 using Project_management_system.Repositories;
 
-namespace Project_management_system.CQRS.User.Commands
+namespace Project_management_system.CQRS.Users.Commands
 {
-    public record VerifyOTPCommand(string email,string otpCode):IRequest<bool>
+    public record VerifyOTPCommand(string email, string otpCode) : IRequest<bool>
     {
     }
     public record VerifyOTPHandler : IRequestHandler<VerifyOTPCommand, bool>
     {
         private IMediator _mediator;
         private IBaseRepository<Models.User> _userRepository;
-        
-        public VerifyOTPHandler(IMediator mediator,IBaseRepository<Models.User> userRepository)
+
+        public VerifyOTPHandler(IMediator mediator, IBaseRepository<Models.User> userRepository)
         {
             _userRepository = userRepository;
             _mediator = mediator;
         }
         public async Task<bool> Handle(VerifyOTPCommand request, CancellationToken cancellationToken)
         {
-            var user =await _mediator.Send(new GetUserByEmailQuery(request.email));
+            var user = await _mediator.Send(new GetUserByEmailQuery(request.email));
             if (user == null)
             {
-                throw new BusinessException(ErrorCode.UserEmailNotFound,"Can not find user with that email");
+                throw new BusinessException(ErrorCode.UserEmailNotFound, "Can not find user with that email");
             }
-            if (user.OtpExpiry==null||user.Otp!=request.otpCode|| user.OtpExpiry < DateTime.UtcNow)
+            if (user.OtpExpiry == null || user.Otp != request.otpCode || user.OtpExpiry < DateTime.UtcNow)
             {
                 throw new BusinessException(ErrorCode.InvalidOTP, "Invalid otp");
             }

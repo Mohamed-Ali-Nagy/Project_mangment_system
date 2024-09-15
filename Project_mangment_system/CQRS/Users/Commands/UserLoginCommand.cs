@@ -1,13 +1,11 @@
 ﻿using MediatR;
-using Project_management_system.Repositories;
-using Project_management_system.Models;
-using System.ComponentModel.DataAnnotations;
-using Project_management_system.CQRS.Users.Queries;
-using Azure.Core;
-using Project_management_system.Services.TokenGenerator;
 using Microsoft.AspNetCore.Identity;
-using Project_management_system.Exceptions;
+using Project_management_system.CQRS.Users.Queries;
 using Project_management_system.Enums;
+using Project_management_system.Exceptions;
+using Project_management_system.Models;
+using Project_management_system.Repositories;
+using Project_management_system.Services.TokenGenerator;
 namespace Project_management_system.CQRS.Users.Commands
 {
     public record UserLoginCommand(UserLoginDTO userLoginDTO) : IRequest<string>;

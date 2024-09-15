@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Project_management_system.Repositories;
 using Entity = Project_management_system.Models;
 
-namespace Project_management_system.CQRS.User.Commands
+namespace Project_management_system.CQRS.Users.Commands
 {
     public record ResetPasswordCommand(string Email, string Otp, string NewPassword, string ConfirmPassword) : IRequest<bool>;
 
