@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Project_management_system.CQRS.Users.Commands;
+using Project_management_system.Enums;
 using Project_management_system.Helpers;
 using Project_management_system.ViewModels;
 using Project_management_system.ViewModels.UserVMs;
@@ -22,15 +23,16 @@ namespace Project_management_system.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("reset")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
+        [HttpPost("reset-password")]
+        public async Task<ResultVM<bool>> ResetPassword([FromBody] ResetPasswordVM viewModel)
         {
+            var command = _mapper.Map<ResetPasswordCommand>(viewModel);
             var result = await _mediator.Send(command);
             if (result)
             {
-                return Ok("Password has been reset successfully.");
+                return ResultVM<bool>.Sucess(result, "Password has been reset successfully.");
             }
-            return BadRequest("Invalid token or error resetting password.");
+            return ResultVM<bool>.Faliure(ErrorCode.InvalidOTP, "Invalid token or error resetting password.");
         }
 
         [HttpGet("VerifyEmail")]
@@ -45,23 +47,23 @@ namespace Project_management_system.Controllers
         }
 
         [HttpGet("ForgetPassword")]
-        public async Task<IActionResult>ForgetPassword(string email)
+        public async Task<IActionResult> ForgetPassword(string email)
         {
-           var result= await  _mediator.Send(new  ForgetPasswordCommand(email));
-            if(!result)
+            var result = await _mediator.Send(new ForgetPasswordCommand(email));
+            if (!result)
             {
                 return BadRequest("Can not send otp to this email");
             }
             return Ok(ResultVM<bool>.Sucess(true, "An email sent with an otp"));
         }
 
-        [HttpPost]
-        public async Task <ResultVM<string>> UserLogin(UserLoginVM viewModel)
+        [HttpPost("login")]
+        public async Task<ResultVM<string>> UserLogin(UserLoginVM viewModel)
         {
             var userDTO = MapperHelper.MapOne<UserLoginDTO>(viewModel);
-           var data = await _mediator.Send(new UserLoginCommand(userDTO));
-            return  ResultVM<string>.Sucess(data);
-           // return result;
+            var data = await _mediator.Send(new UserLoginCommand(userDTO));
+            return ResultVM<string>.Sucess(data);
+            // return result;
         }
     }
 }

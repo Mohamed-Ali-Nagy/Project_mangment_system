@@ -37,7 +37,6 @@
   <ItemGroup>
     <Folder Include="DTO\UserDTOs\" />
     <Folder Include="Middelwares\" />
-    <Folder Include="ViewModels\UserVMs\" />
   </ItemGroup>
 
 </Project>
