@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Project_management_system.CQRS.Users.Commands;
-using Project_management_system.Enums;
 using Project_management_system.Helpers;
 using Project_management_system.ViewModels;
 using Project_management_system.ViewModels.UserVMs;
@@ -23,12 +22,7 @@ namespace Project_management_system.Controllers
         public async Task<ResultVM<bool>> ResetPassword([FromBody] ResetPasswordVM viewModel)
         {
             var command = MapperHelper.MapOne<ResetPasswordCommand>(viewModel);
-            var result = await _mediator.Send(command);
-            if (result)
-            {
-                return ResultVM<bool>.Sucess(result, "Password has been reset successfully.");
-            }
-            return ResultVM<bool>.Faliure(ErrorCode.InvalidOTP, "Invalid token or error resetting password.");
+            return await _mediator.Send(command);
         }
 
         [HttpGet("VerifyEmail")]

@@ -1,14 +1,16 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Project_management_system.Enums;
 using Project_management_system.Repositories;
+using Project_management_system.ViewModels;
 using Entity = Project_management_system.Models;
 
 namespace Project_management_system.CQRS.Users.Commands
 {
-    public record ResetPasswordCommand(string Email, string Otp, string NewPassword, string ConfirmPassword) : IRequest<bool>;
+    public record ResetPasswordCommand(string Email, string Otp, string NewPassword, string ConfirmPassword) : IRequest<ResultVM<bool>>;
 
-    public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, bool>
+    public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, ResultVM<bool>>
     {
         private readonly IBaseRepository<Entity.User> _userRepository;
         private readonly IPasswordHasher<Entity.User> _passwordHasher;
@@ -19,17 +21,17 @@ namespace Project_management_system.CQRS.Users.Commands
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<bool> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+        public async Task<ResultVM<bool>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
         {
             if (request.NewPassword != request.ConfirmPassword)
             {
-                throw new Exception("Passwords do not match");
+                return ResultVM<bool>.Faliure(ErrorCode.PasswordDontMatched, "Passwords do not match");
             }
 
             var user = await _userRepository.Get(u => u.Email == request.Email).FirstOrDefaultAsync();
             if (user is null || user.Otp != request.Otp || user.OtpExpiry < DateTime.Now)
             {
-                return false;
+                return ResultVM<bool>.Faliure(ErrorCode.InvalidOTP, "Invalid otp or error resetting password.");
             }
 
             user.Password = _passwordHasher.HashPassword(user, request.NewPassword);
@@ -38,7 +40,7 @@ namespace Project_management_system.CQRS.Users.Commands
 
             _userRepository.Update(user);
             _userRepository.SaveChanges();
-            return true;
+            return ResultVM<bool>.Sucess(true, "Password has been reset successfully.");
         }
     }
 }

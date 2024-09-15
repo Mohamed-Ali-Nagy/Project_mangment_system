@@ -10,5 +10,8 @@
         InvalidOTP = 3000,
         WrongPasswordOrEmail = 100,
 
+
+        PasswordDontMatched = 4000
+
     }
 }
