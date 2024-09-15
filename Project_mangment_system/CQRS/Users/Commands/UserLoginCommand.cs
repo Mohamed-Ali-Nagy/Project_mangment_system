@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Project_management_system.CQRS.Users.Queries;
 using Project_management_system.Enums;
 using Project_management_system.Exceptions;
+using Project_management_system.Helpers;
 using Project_management_system.Models;
 using Project_management_system.Repositories;
-using Project_management_system.Services.TokenGenerator;
 namespace Project_management_system.CQRS.Users.Commands
 {
     public record UserLoginCommand(UserLoginDTO userLoginDTO) : IRequest<string>;
@@ -15,18 +15,18 @@ namespace Project_management_system.CQRS.Users.Commands
     {
         private readonly IBaseRepository<User> _userrepository;
         private readonly IMediator _mediator;
-        private readonly ITokenGenerator _tokenGenerator;
+      //  private readonly ITokenGenerator _tokenGenerator;
         private readonly IPasswordHasher<User> _passwordHasher;
         public UserLoginCommandHandler(IBaseRepository<User> userrepository, 
             IMediator mediator, 
-            ITokenGenerator tokenGenerator,
+           // ITokenGenerator tokenGenerator,
             IPasswordHasher<User> passwordHasher
 
             )
         {
             _userrepository = userrepository;  
             _mediator = mediator;
-            _tokenGenerator = tokenGenerator;
+           // _tokenGenerator = tokenGenerator;
             _passwordHasher = passwordHasher;
         }
         
@@ -46,7 +46,7 @@ namespace Project_management_system.CQRS.Users.Commands
             var user = await _mediator.Send(new GetUserByEmailQuery(request.userLoginDTO.Email));
             if (await ValidateUser(request.userLoginDTO))
             {
-                return _tokenGenerator.GenerateToken(user);
+                return TokenHandler.GenerateToken(user);
      
             }
             else

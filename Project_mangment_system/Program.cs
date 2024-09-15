@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Project_management_system;
 using Project_management_system.Data;
@@ -69,17 +70,17 @@ builder.Services.AddAuthentication(options =>
 
 
 //builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-{
-    // Configure password options (simple configuration)
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequiredLength = 6;
-})
-.AddEntityFrameworkStores<Context>()
-.AddDefaultTokenProviders();
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+//{
+//    // Configure password options (simple configuration)
+//    options.Password.RequireDigit = true;
+//    options.Password.RequireLowercase = true;
+//    options.Password.RequireUppercase = true;
+//    options.Password.RequireNonAlphanumeric = true;
+//    options.Password.RequiredLength = 6;
+//})
+//.AddEntityFrameworkStores<Context>()
+//.AddDefaultTokenProviders();
 
 
 //builder.Services.AddAuthentication(options =>
@@ -105,6 +106,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 var app = builder.Build();
 
 MapperHelper.Mapper = app.Services.GetService<IMapper>();
+var emailSettings = app.Services.GetService<IOptions<EmailSettings>>();
+EmailService._mailSettings = emailSettings.Value;
+
+////EmailService._mailSettings = app.Services.GetService<>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

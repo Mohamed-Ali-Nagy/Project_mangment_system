@@ -2,19 +2,16 @@
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using Project_management_system.Helpers;
-namespace Project_management_system.Services
+
+namespace Project_management_system.Helpers
 {
-    public class EmailService:IEmailService
+    public static class EmailService
     {
-        private EmailSettings _mailSettings;
-        public EmailService(IOptions<EmailSettings> mailSettings)
+        public static EmailSettings _mailSettings;
+
+        public static async Task SendEmailAsync(string mailTo, string subject, string body)
         {
-            _mailSettings=mailSettings.Value;
-        }
-        public async Task SendEmailAsync(string mailTo, string subject, string body)
-        {
-            
+
 
             var email = new MimeMessage
             {

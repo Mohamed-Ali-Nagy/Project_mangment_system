@@ -2,7 +2,7 @@
 
 namespace Project_management_system.Models
 {
-    public class UserRole
+    public class UserRole:BaseModel
     {
         public int UserID { get; set; }
         public User User{ get; set; }

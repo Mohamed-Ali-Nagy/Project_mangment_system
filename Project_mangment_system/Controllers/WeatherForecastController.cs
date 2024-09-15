@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Project_management_system.Services;
+using Project_management_system.Helpers;
 
 namespace Project_management_system.Controllers
 {
@@ -7,12 +7,12 @@ namespace Project_management_system.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private readonly IEmailService _emailService;
+   
 
         [HttpPost("send")]
         public async Task<IActionResult> SendMail(string ToEmail, string Subject, string Body)
         {
-             await _emailService.SendEmailAsync(ToEmail, Subject, Body);
+            await EmailService.SendEmailAsync(ToEmail, Subject, Body);
             return Ok();
         }
 
@@ -23,10 +23,10 @@ namespace Project_management_system.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IEmailService mailingService)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
-            _emailService = mailingService;
+            
         }
     }
 
