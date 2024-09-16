@@ -42,18 +42,6 @@ builder.Services.AddMediatR(options =>
 
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-{
-    // Configure password options (simple configuration)
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequiredLength = 6;
-})
-.AddEntityFrameworkStores<Context>()
-.AddDefaultTokenProviders();
-
 
 builder.Services.AddAuthentication(options =>
 {
@@ -76,6 +64,9 @@ builder.Services.AddAuthentication(options =>
 });
 
 var app = builder.Build();
+var configuration = app.Services.GetRequiredService<IConfiguration>();
+ConfigHelper.Initialize(configuration);
+
 
 MapperHelper.Mapper = app.Services.GetService<IMapper>();
 // Configure the HTTP request pipeline.

@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using Project_management_system.Repositories;
 using Project_management_system.Models;
-using System.ComponentModel.DataAnnotations;
 using Project_management_system.CQRS.Users.Queries;
-using Azure.Core;
 using Project_management_system.Services.TokenGenerator;
 using Microsoft.AspNetCore.Identity;
 using Project_management_system.Exceptions;
 using Project_management_system.Enums;
+using BCrypt.Net;
+using Project_management_system.Helpers;
 namespace Project_management_system.CQRS.Users.Commands
 {
     public record UserLoginCommand(UserLoginDTO userLoginDTO) : IRequest<string>;
@@ -34,10 +34,14 @@ namespace Project_management_system.CQRS.Users.Commands
         
         public async Task< bool> ValidateUser( UserLoginDTO userDTO)
         {
-            
-            var user = await _mediator.Send(new GetUserByEmailQuery(userDTO.Email));
-            var verificationResult = _passwordHasher.VerifyHashedPassword( user, user.Password, userDTO.Password);
-            if (user != null && verificationResult == PasswordVerificationResult.Success) {
+            var logedinUser = MapperHelper.MapOne<User>(userDTO);
+            var user = await _mediator.Send(new GetUserByEmailQuery(logedinUser.Email));
+            var result = BCrypt.Net.BCrypt.Verify(userDTO.Password, user.Password);
+            // var verificationResult = _passwordHasher.VerifyHashedPassword( user, user.Password, userDTO.Password);
+            //if (user != null && verificationResult == PasswordVerificationResult.Success) {
+
+             if (user != null && result) {
+           // if (user!=null && user.Password == logedinUser.Password) { 
                 return true;
             }
             return false;
@@ -48,7 +52,7 @@ namespace Project_management_system.CQRS.Users.Commands
             var user = await _mediator.Send(new GetUserByEmailQuery(request.userLoginDTO.Email));
             if (await ValidateUser(request.userLoginDTO))
             {
-                return _tokenGenerator.GenerateToken(user);
+                return  _tokenGenerator.GenerateToken(user);
      
             }
             else

@@ -1,11 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.VisualBasic;
-using Project_management_system.Enums;
-using Project_management_system.Models;
+﻿using Microsoft.IdentityModel.Tokens;
+using Project_management_system.CQRS.Users.Queries;
 using System.IdentityModel.Tokens.Jwt;
-using System.Runtime;
 using System.Security.Claims;
 using System.Text;
 
@@ -18,7 +13,7 @@ namespace Project_management_system.Services.TokenGenerator
         {
             _configuration = configuration;
         }
-        public  string GenerateToken(User user)
+        public  string GenerateToken(UserDetailsDTO user)
         {
             var authClaims = new List<Claim>
             {
@@ -27,9 +22,9 @@ namespace Project_management_system.Services.TokenGenerator
 
 
             };
-            foreach (var userRole in user.UserRoles)
+            foreach (var userRole in user.Roles)
             {
-                authClaims.Add(new Claim(ClaimTypes.Role, userRole.Role.ToString()));
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole.ToString()));
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
