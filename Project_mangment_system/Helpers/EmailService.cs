@@ -2,6 +2,7 @@
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using MimeKit.Text;
 
 namespace Project_management_system.Helpers
 {
@@ -11,7 +12,6 @@ namespace Project_management_system.Helpers
 
         public static async Task SendEmailAsync(string mailTo, string subject, string body)
         {
-
 
             var email = new MimeMessage
             {

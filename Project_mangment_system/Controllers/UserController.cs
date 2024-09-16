@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Project_management_system.CQRS.Users.Commands;
+using Project_management_system.Enums;
 using Project_management_system.Helpers;
 using Project_management_system.ViewModels;
 using Project_management_system.ViewModels.UserVMs;
@@ -22,27 +23,28 @@ namespace Project_management_system.Controllers
         public async Task<ResultVM<bool>> ResetPassword([FromBody] ResetPasswordVM viewModel)
         {
             var command = MapperHelper.MapOne<ResetPasswordCommand>(viewModel);
+
             return await _mediator.Send(command);
         }
 
-        [HttpGet("VerifyEmail")]
-        public async Task<IActionResult> VerifyEmail(string email, string otpCode)
+        [HttpPost("VerifyEmail")]
+        public async Task<IActionResult> VerifyEmail(VerifyEmailVM verifyEmailVM)
         {
-            var isVerified = await _mediator.Send(new VerifyOTPCommand(email, otpCode));
-            if (!isVerified)
+            var resultDTO = await _mediator.Send(verifyEmailVM.MapOne<VerifyOTPCommand>());
+            if (!resultDTO.IsSuccess)
             {
-                return BadRequest("email is not verified");
+                return Ok(ResultVM<bool>.Faliure(Enums.ErrorCode.UserEmailNotFound,resultDTO.Message));
             }
             return Ok(ResultVM<bool>.Sucess(true, "email verified successfully"));
         }
 
-        [HttpGet("ForgetPassword")]
-        public async Task<IActionResult> ForgetPassword(string email)
+        [HttpPost("ForgetPassword")]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPasswordVM)
         {
-            var result = await _mediator.Send(new ForgetPasswordCommand(email));
-            if (!result)
+            var result = await _mediator.Send(new ForgetPasswordCommand(forgetPasswordVM.Email));
+            if (!result.IsSuccess)
             {
-                return BadRequest("Can not send otp to this email");
+                return Ok (ResultVM<bool>.Faliure(ErrorCode.UserEmailNotFound, "Can not send message to this email"));
             }
             return Ok(ResultVM<bool>.Sucess(true, "An email sent with an otp"));
         }
