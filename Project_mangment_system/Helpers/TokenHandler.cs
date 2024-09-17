@@ -1,25 +1,20 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Project_management_system.CQRS.Users.Queries;
+using Project_management_system.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Project_management_system.Services.TokenGenerator
+namespace Project_management_system.Helpers
 {
-    public class TokenGenerator:ITokenGenerator
+    public static class TokenHandler
     {
-        IConfiguration _configuration;
-        public TokenGenerator(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-        public  string GenerateToken(UserDetailsDTO user)
+        public static string GenerateToken(UserDetailsDTO user)
         {
             var authClaims = new List<Claim>
             {
                  new Claim(ClaimTypes.Name, user.Name),
                   new Claim(JwtRegisteredClaimNames.Sub,user.ID.ToString()),
-
 
             };
             foreach (var userRole in user.Roles)
@@ -31,10 +26,10 @@ namespace Project_management_system.Services.TokenGenerator
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(authClaims),
-                Expires = DateTime.UtcNow.AddHours(1),
-                Issuer = _configuration["jwtSettings:Issuer"] ,
-                Audience = _configuration["jwtSettings:Audience"] ,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["jwtSettings:Key"])), SecurityAlgorithms.HmacSha256Signature)
+                Expires = DateTime.UtcNow.AddMinutes(Constants.DurationInMinutes),
+                Issuer = Constants.Issuer,
+                Audience = Constants.Audience,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Constants.SecretKey)), SecurityAlgorithms.HmacSha256Signature)
 
             };
 
@@ -42,6 +37,5 @@ namespace Project_management_system.Services.TokenGenerator
             return tokenHandler.WriteToken(token);
         }
 
-      
     }
 }

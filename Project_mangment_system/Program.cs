@@ -1,19 +1,17 @@
-using Autofac.Extensions.DependencyInjection;
 using Autofac;
-using Microsoft.EntityFrameworkCore;
-using Project_management_system;
-using Project_management_system.Data;
-using Project_management_system.Profiles;
-using Project_management_system.Helpers;
+using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Project_management_system.Services;
-using Autofac.Core;
 using Microsoft.AspNetCore.Identity;
-using Project_management_system.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Project_management_system;
+using Project_management_system.Data;
+using Project_management_system.Helpers;
+using Project_management_system.Profiles;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,20 +26,13 @@ builder.Services.AddDbContext<Context>(option => option.UseSqlServer(builder.Con
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterModule(new AutoFacModule()));
-
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddAutoMapper(typeof(UserProfile));
 
-//builder.Services.AddMediatR(typeof(Program).Assembly);
-//MediatR
-builder.Services.AddMediatR(options =>
-{
-    options.RegisterServicesFromAssemblies(typeof(Program).Assembly);
-});
+builder.Services.AddMediatR(typeof(Program).Assembly);
 
+//builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
 
-
-
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -63,12 +54,21 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+
+
+
+
 var app = builder.Build();
 var configuration = app.Services.GetRequiredService<IConfiguration>();
 ConfigHelper.Initialize(configuration);
 
 
 MapperHelper.Mapper = app.Services.GetService<IMapper>();
+var emailSettings = app.Services.GetService<IOptions<EmailSettings>>();
+EmailService._mailSettings = emailSettings.Value;
+
+////EmailService._mailSettings = app.Services.GetService<>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -78,6 +78,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization(); 
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

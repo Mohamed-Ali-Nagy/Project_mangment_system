@@ -1,12 +1,10 @@
 ﻿using MediatR;
-using Project_management_system.Helpers;
 using Project_management_system.Models;
 using Project_management_system.Repositories;
-using static Project_management_system.CQRS.Users.Queries.GetUserByPredicateQueryHandler;
 
 namespace Project_management_system.CQRS.Users.Queries
 {
-    public record GetUserByEmailQuery(string email):IRequest<UserDetailsDTO>;
+    public record GetUserByPredicateQuery(string email):IRequest<UserDetailsDTO>;
     public class UserDetailsDTO
     {
         public int ID { get; set; }
@@ -15,7 +13,7 @@ namespace Project_management_system.CQRS.Users.Queries
         public string Password { get; set; }
         public HashSet<string> Roles { get; set; }
     }
-    public class GetUserByPredicateQueryHandler :IRequestHandler<GetUserByEmailQuery, UserDetailsDTO>
+    public class GetUserByPredicateQueryHandler :IRequestHandler<GetUserByPredicateQuery, UserDetailsDTO>
     {
         private readonly IBaseRepository<User> _userRepository;
         public GetUserByPredicateQueryHandler(IBaseRepository<User> userRepository)
@@ -23,7 +21,7 @@ namespace Project_management_system.CQRS.Users.Queries
             _userRepository = userRepository;
         }
         
-        public async Task<UserDetailsDTO> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
+        public async Task<UserDetailsDTO> Handle(GetUserByPredicateQuery request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetAsyncWithProjectTo<UserDetailsDTO>(user => user.Email == request.email);
             return user;

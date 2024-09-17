@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Project_management_system.Helpers;
 
 namespace Project_management_system.Controllers
 {
@@ -6,6 +7,15 @@ namespace Project_management_system.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+   
+
+        [HttpPost("send")]
+        public async Task<IActionResult> SendMail(string ToEmail, string Subject, string Body)
+        {
+            await EmailService.SendEmailAsync(ToEmail, Subject, Body);
+            return Ok();
+        }
+
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -16,18 +26,8 @@ namespace Project_management_system.Controllers
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
-        }
-
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            
         }
     }
-}
+
+}    
