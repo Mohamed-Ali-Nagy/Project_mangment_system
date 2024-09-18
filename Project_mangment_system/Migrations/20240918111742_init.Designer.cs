@@ -12,8 +12,8 @@ using Project_management_system.Data;
 namespace Project_management_system.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240916073831_EditUser")]
-    partial class EditUser
+    [Migration("20240918111742_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
