@@ -20,6 +20,8 @@ namespace Project_management_system.Profiles
             //    .ForMember(dst=>dst.Roles,
             //    opt=>opt.MapFrom(src=>src.UserRoles.Select(x=>x.Role.ToString())));
             CreateMap<VerifyEmailVM, VerifyOTPCommand>().ReverseMap();
+            CreateMap<UserRegisterCommand, User>();
+            CreateMap<UserRegisterVM,UserRegisterCommand>();
         }
     }
 }

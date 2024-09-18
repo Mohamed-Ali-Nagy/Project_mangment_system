@@ -12,6 +12,7 @@ namespace Project_management_system.Repositories
         IQueryable<T> GetAll();
         IQueryable<T> Get(Expression<Func<T, bool>> predicate);
         void Update(T entity);
+        public void Add(T entity);
         void SaveChanges();
     }
 }

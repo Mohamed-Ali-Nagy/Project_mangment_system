@@ -27,17 +27,14 @@ namespace Project_management_system.CQRS.Users.Commands
             {
                 return ResultDTO<bool>.Faliure("Can not find user with that email");
             }
-            user.Otp = GenerateOtp();
-            user.OtpExpiry = DateTime.Now.AddMinutes(5);
+            user.Otp = OTPHelper.GenerateOtp();
+            user.OtpExpiry = OTPHelper.SetOtpExpiry();
             _userRepository.SaveChanges();
             await EmailService.SendEmailAsync(user.Email, "", user.Otp);
             return  ResultDTO<bool>.Sucess(true);
             ;
 
         }
-        private string GenerateOtp()
-        {
-            return new Random().Next(100000, 999999).ToString();
-        }
+
     }
 }

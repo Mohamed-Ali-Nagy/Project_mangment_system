@@ -59,5 +59,20 @@ namespace Project_management_system.Controllers
             }
             return ResultVM<string>.Sucess(result.Data,"User logged successfully");
         }
+
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(UserRegisterVM userRegisterVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);  
+            }
+            var result=await _mediator.Send(userRegisterVM.MapOne<UserRegisterCommand>());
+            if (!result.IsSuccess)
+            {
+                return Ok(ResultVM<bool>.Faliure(ErrorCode.EmailIsNotUnique,result.Message));
+            }
+            return Ok(ResultVM<bool>.Sucess(true,"Registered successfully"));
+        }
     }
 }

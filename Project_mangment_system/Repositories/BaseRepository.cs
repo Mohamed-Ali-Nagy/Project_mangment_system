@@ -42,7 +42,10 @@ namespace Project_management_system.Repositories
         {
             _context.Set<T>().Update(entity);
         }
-
+        public void Add(T entity)
+        {
+            _context.Add(entity);
+        }
         public void SaveChanges()
         {
             _context.SaveChanges();
