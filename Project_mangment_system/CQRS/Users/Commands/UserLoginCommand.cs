@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Project_management_system.CQRS.Users.Queries;
 using Project_management_system.Enums;
 using Project_management_system.Exceptions;
