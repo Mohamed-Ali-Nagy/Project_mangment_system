@@ -20,6 +20,6 @@ namespace Project_management_system.Models
         [Required]
         public string Country { get; set; }
         public bool IsVerified { get; set; }
-        public Collection<UserRole> UserRoles { get; set; }
+       public Collection<UserRole> UserRoles { get; set; }
     }
 }
