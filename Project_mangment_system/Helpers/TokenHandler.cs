@@ -9,7 +9,7 @@ namespace Project_management_system.Helpers
 {
     public static class TokenHandler
     {
-        public static string GenerateToken(UserDetailsDTO user)
+        public static string GenerateToken(User user)
         {
             var authClaims = new List<Claim>
             {
@@ -17,10 +17,10 @@ namespace Project_management_system.Helpers
                   new Claim(JwtRegisteredClaimNames.Sub,user.ID.ToString()),
 
             };
-            foreach (var userRole in user.Roles)
-            {
-                authClaims.Add(new Claim(ClaimTypes.Role, userRole.ToString()));
-            }
+            //foreach (var userRole in user.Roles)
+            //{
+            //    authClaims.Add(new Claim(ClaimTypes.Role, userRole.ToString()));
+            //}
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor

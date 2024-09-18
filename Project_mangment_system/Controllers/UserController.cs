@@ -50,12 +50,14 @@ namespace Project_management_system.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ResultVM<string>> UserLogin(UserLoginVM viewModel)
+        public async Task<ResultVM<string>> UserLogin(UserLoginVM userVM)
         {
-            var userDTO = MapperHelper.MapOne<UserLoginDTO>(viewModel);
-            var data = await _mediator.Send(new UserLoginCommand(userDTO));
-            return ResultVM<string>.Sucess(data);
-            // return result;
+            var result = await _mediator.Send(userVM.MapOne<UserLoginCommand>());
+            if (!result.IsSuccess)
+            {
+                return ResultVM<string>.Faliure(ErrorCode.WrongPasswordOrEmail, result.Message);
+            }
+            return ResultVM<string>.Sucess(result.Data,"User logged successfully");
         }
     }
 }

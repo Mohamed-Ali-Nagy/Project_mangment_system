@@ -8,7 +8,7 @@ namespace Project_management_system.CQRS.Users.Queries
     public class UserDetailsDTO
     {
         public int ID { get; set; }
-    public string Name { get; set; }
+        public string Name { get; set; }
         public string Email { get; set; }   
         public string Password { get; set; }
         public HashSet<string> Roles { get; set; }
