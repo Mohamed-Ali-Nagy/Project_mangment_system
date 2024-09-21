@@ -1,7 +1,4 @@
-﻿using Project_management_system.Models;
-using System.ComponentModel.DataAnnotations;
-
-namespace Project_management_system.DTO.UserDTOs
+﻿namespace Project_management_system.DTO.UserDTOs
 {
     public class UserDTO
     {
@@ -13,7 +10,5 @@ namespace Project_management_system.DTO.UserDTOs
         public string ImageURL { get; set; }
         public string Country { get; set; }
         public bool IsVerified { get; set; }
-
-
     }
 }

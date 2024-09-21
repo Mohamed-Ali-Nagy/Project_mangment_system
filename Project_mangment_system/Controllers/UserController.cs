@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project_management_system.CQRS.Users.Commands;
 using Project_management_system.Enums;
@@ -20,9 +21,18 @@ namespace Project_management_system.Controllers
         }
 
         [HttpPost("reset-password")]
-        public async Task<ResultVM<bool>> ResetPassword([FromBody] ResetPasswordVM viewModel)
+        public async Task<ResultVM<bool>> ResetPasswordAsync([FromBody] ResetPasswordVM viewModel)
         {
             var command = MapperHelper.MapOne<ResetPasswordCommand>(viewModel);
+
+            return await _mediator.Send(command);
+        }
+
+        [HttpPost("change-password")]
+        [Authorize]
+        public async Task<ResultVM<bool>> ChangePasswordAsync([FromBody] ChangePasswordVM viewModel)
+        {
+            var command = MapperHelper.MapOne<ChangePasswordCommand>(viewModel);
 
             return await _mediator.Send(command);
         }
@@ -33,7 +43,7 @@ namespace Project_management_system.Controllers
             var resultDTO = await _mediator.Send(verifyEmailVM.MapOne<VerifyOTPCommand>());
             if (!resultDTO.IsSuccess)
             {
-                return Ok(ResultVM<bool>.Faliure(Enums.ErrorCode.UserEmailNotFound,resultDTO.Message));
+                return Ok(ResultVM<bool>.Faliure(Enums.ErrorCode.UserEmailNotFound, resultDTO.Message));
             }
             return Ok(ResultVM<bool>.Sucess(true, "email verified successfully"));
         }
@@ -44,7 +54,7 @@ namespace Project_management_system.Controllers
             var result = await _mediator.Send(new ForgetPasswordCommand(forgetPasswordVM.Email));
             if (!result.IsSuccess)
             {
-                return Ok (ResultVM<bool>.Faliure(ErrorCode.UserEmailNotFound, "Can not send message to this email"));
+                return Ok(ResultVM<bool>.Faliure(ErrorCode.UserEmailNotFound, "Can not send message to this email"));
             }
             return Ok(ResultVM<bool>.Sucess(true, "An email sent with an otp"));
         }
@@ -57,7 +67,7 @@ namespace Project_management_system.Controllers
             {
                 return ResultVM<string>.Faliure(ErrorCode.WrongPasswordOrEmail, result.Message);
             }
-            return ResultVM<string>.Sucess(result.Data,"User logged successfully");
+            return ResultVM<string>.Sucess(result.Data, "User logged successfully");
         }
 
         [HttpPost("Register")]
@@ -65,17 +75,17 @@ namespace Project_management_system.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);  
+                return BadRequest(ModelState);
             }
             var te = userRegisterVM.MapOne<UserRegisterCommand>();
-            var result=await _mediator.Send(userRegisterVM.MapOne<UserRegisterCommand>());
+            var result = await _mediator.Send(userRegisterVM.MapOne<UserRegisterCommand>());
             if (!result.IsSuccess)
             {
-                return Ok(ResultVM<bool>.Faliure(ErrorCode.EmailIsNotUnique,result.Message));
+                return Ok(ResultVM<bool>.Faliure(ErrorCode.EmailIsNotUnique, result.Message));
             }
-            return Ok(ResultVM<bool>.Sucess(true,"Registered successfully"));
+            return Ok(ResultVM<bool>.Sucess(true, "Registered successfully"));
         }
 
-       
+
     }
 }
