@@ -10,6 +10,7 @@ using Project_management_system;
 using Project_management_system.Data;
 using Project_management_system.Helpers;
 using Project_management_system.Profiles;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterModule(new AutoFacModule()));
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddAutoMapper(typeof(UserProfile));
+builder.Services.AddAutoMapper(typeof(ProjectProfile));
 
 builder.Services.AddMediatR(typeof(Program).Assembly);
 
