@@ -16,8 +16,8 @@ namespace Project_management_system.CQRS.Users.Commands
         public async Task<ResultDTO<string>> Handle(UserLoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _mediator.Send(new GetUserByEmailQuery(request.email));
-            //var result = BCrypt.Net.BCrypt.Verify(userDTO.Password, user.Password);
-            if (user != null && user.Password == request.password && user.IsVerified == true)
+            var result = BCrypt.Net.BCrypt.Verify(request.password, user.Password);
+            if (user != null && result && user.IsVerified == true)
             {
                 return  ResultDTO<string>.Sucess( TokenHandler.GenerateToken(user));
             }
