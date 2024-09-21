@@ -13,12 +13,9 @@ namespace Project_management_system.Profiles
         {
             CreateMap<User, UserDTO>();
             CreateMap<UserLoginVM, UserLoginCommand>();
-          //  CreateMap<UserLoginVM, UserLoginDTO>();
+      
             CreateMap<ResetPasswordVM, ResetPasswordCommand>().ReverseMap();
-       //     CreateMap<UserLoginDTO, User>();
-            //CreateMap<User, UserDetailsDTO>()
-            //    .ForMember(dst=>dst.Roles,
-            //    opt=>opt.MapFrom(src=>src.UserRoles.Select(x=>x.Role.ToString())));
+
             CreateMap<VerifyEmailVM, VerifyOTPCommand>().ReverseMap();
             CreateMap<UserRegisterCommand, User>();
             CreateMap<UserRegisterVM,UserRegisterCommand>();

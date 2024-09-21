@@ -67,6 +67,7 @@ namespace Project_management_system.Controllers
             {
                 return BadRequest(ModelState);  
             }
+            var te = userRegisterVM.MapOne<UserRegisterCommand>();
             var result=await _mediator.Send(userRegisterVM.MapOne<UserRegisterCommand>());
             if (!result.IsSuccess)
             {
@@ -74,5 +75,7 @@ namespace Project_management_system.Controllers
             }
             return Ok(ResultVM<bool>.Sucess(true,"Registered successfully"));
         }
+
+       
     }
 }

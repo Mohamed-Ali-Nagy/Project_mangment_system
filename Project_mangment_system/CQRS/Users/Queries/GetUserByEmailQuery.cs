@@ -22,7 +22,7 @@ namespace Project_management_system.CQRS.Users.Queries
             var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Email == request.email);
             if (user == null)
             {
-                throw new BusinessException(ErrorCode.UserEmailNotFound, "Can not find user with this email");
+               return null;//throw new BusinessException(ErrorCode.UserEmailNotFound, "Can not find user with this email");
             }
             return user;
         }

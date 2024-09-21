@@ -8,8 +8,15 @@ using Project_management_system.ViewModels;
 
 namespace Project_management_system.CQRS.Users.Commands
 {
-    public record UserRegisterCommand(string name,string password,string email ,string phone,string imageURL,string country):IRequest<ResultDTO<bool>>
+    public record UserRegisterCommand():IRequest<ResultDTO<bool>>
     {
+       public string name;
+       public string password;
+        public string email;
+        public string phoneNumber;
+        public string imageURL;
+        public string country;
+
     }
     public record UserRegisterHandler : IRequestHandler<UserRegisterCommand, ResultDTO<bool>>
     {
