@@ -97,9 +97,6 @@ namespace Project_management_system.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("ProjectID")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -111,8 +108,6 @@ namespace Project_management_system.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("ProjectID");
 
                     b.HasIndex("UserID");
 
@@ -171,7 +166,7 @@ namespace Project_management_system.Migrations
             modelBuilder.Entity("Project_management_system.Models.ProjectsUsers", b =>
                 {
                     b.HasOne("Project_management_system.Models.Project", "Project")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("ProjectID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -189,10 +184,6 @@ namespace Project_management_system.Migrations
 
             modelBuilder.Entity("Project_management_system.Models.Task", b =>
                 {
-                    b.HasOne("Project_management_system.Models.Project", null)
-                        .WithMany("Tasks")
-                        .HasForeignKey("ProjectID");
-
                     b.HasOne("Project_management_system.Models.User", "User")
                         .WithMany("Tasks")
                         .HasForeignKey("UserID")
@@ -200,13 +191,6 @@ namespace Project_management_system.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Project_management_system.Models.Project", b =>
-                {
-                    b.Navigation("Tasks");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Project_management_system.Models.User", b =>

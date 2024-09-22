@@ -89,17 +89,11 @@ namespace Project_management_system.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserID = table.Column<int>(type: "int", nullable: false),
-                    ProjectID = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tasks", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Tasks_Projects_ProjectID",
-                        column: x => x.ProjectID,
-                        principalTable: "Projects",
-                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Tasks_Users_UserID",
                         column: x => x.UserID,
@@ -117,11 +111,6 @@ namespace Project_management_system.Migrations
                 name: "IX_ProjectsUsers_UserID",
                 table: "ProjectsUsers",
                 column: "UserID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tasks_ProjectID",
-                table: "Tasks",
-                column: "ProjectID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_UserID",
