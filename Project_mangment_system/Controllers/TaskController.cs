@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Project_management_system.CQRS.Tasks.Commands;
 using Project_management_system.CQRS.Tasks.Queries;
 using Project_management_system.Helpers;
 using Project_management_system.ViewModels;
@@ -12,7 +13,7 @@ namespace Project_management_system.Controllers
     public class TaskController(ControllerParameters controllerParameters) : BaseController(controllerParameters)
     {
         [HttpGet("getall")]
-        [Authorize]
+        //[Authorize]
         public async Task<ResultVM<IEnumerable<ProjectTaskVM>>> GetAllAsync()
         {
             var tasks = await mediator.Send(new GetAllTasksQuery());
@@ -20,6 +21,14 @@ namespace Project_management_system.Controllers
             var result = tasks.AsQueryable().Map<ProjectTaskVM>().AsEnumerable();
 
             return ResultVM<IEnumerable<ProjectTaskVM>>.Sucess(result);
+        }
+
+        [HttpPost("Add")]
+        public async Task<IActionResult> Add(AddTaskVM addTaskVM)
+        {
+            var result = await mediator.Send(addTaskVM.MapOne<AddTaskCommand>());
+            return Ok(ResultVM<bool>.Sucess(true));
+
         }
     }
 }
