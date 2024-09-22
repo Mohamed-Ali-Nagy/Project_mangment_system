@@ -41,7 +41,6 @@
   <ItemGroup>
     <Folder Include="CQRS\Projects\NewFolder1\" />
     <Folder Include="CQRS\Projects\NewFolder\" />
-    <Folder Include="DTO\UserDTOs\" />
     <Folder Include="Middelwares\" />
   </ItemGroup>
 

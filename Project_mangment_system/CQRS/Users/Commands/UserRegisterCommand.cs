@@ -34,7 +34,9 @@ namespace Project_management_system.CQRS.Users.Commands
             {
                 return ResultDTO<bool>.Faliure("Error happened while register this user ");
             }
+           var hashedPassword  = BCrypt.Net.BCrypt.HashPassword(request.password);
             var user=request.MapOne<User>();
+            user.Password = hashedPassword;
             user.Otp = OTPHelper.GenerateOtp();
             user.OtpExpiry=OTPHelper.SetOtpExpiry();
 

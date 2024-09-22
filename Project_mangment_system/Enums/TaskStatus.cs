@@ -2,9 +2,9 @@
 {
     public enum TaskStatus
     {
-       ToDo,
-       InProgress,
-       Done,
+        ToDo,
+        InProgress,
+        Done
     }
-  
+
 }
