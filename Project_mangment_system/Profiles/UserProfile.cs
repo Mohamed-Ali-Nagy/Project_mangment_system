@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Project_management_system.CQRS.User.Commands;
 using Project_management_system.CQRS.Users.Commands;
 using Project_management_system.CQRS.Users.Queries;
 using Project_management_system.DTO.UserDTOs;
@@ -22,6 +23,7 @@ namespace Project_management_system.Profiles
             CreateMap<VerifyEmailVM, VerifyOTPCommand>().ReverseMap();
             CreateMap<UserRegisterCommand, User>();
             CreateMap<UserRegisterVM,UserRegisterCommand>();
-        }
+			CreateMap<Models.User, RegisterAccountToReturnDTo>();
+		}
     }
 }

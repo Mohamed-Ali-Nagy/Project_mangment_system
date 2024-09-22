@@ -14,8 +14,8 @@ namespace Project_management_system.CQRS.Users.Commands
     public record UserRegisterHandler : IRequestHandler<UserRegisterCommand, ResultDTO<bool>>
     {
         private readonly IMediator _mediator;
-        private readonly IBaseRepository<User> _repository;
-        public UserRegisterHandler(IMediator mediator,IBaseRepository<User> repository)
+        private readonly IBaseRepository<Models.User> _repository;
+        public UserRegisterHandler(IMediator mediator,IBaseRepository<Models.User> repository)
         {
             _mediator = mediator;
             _repository = repository;
@@ -27,7 +27,7 @@ namespace Project_management_system.CQRS.Users.Commands
             {
                 return ResultDTO<bool>.Faliure("Error happened while register this user ");
             }
-            var user=request.MapOne<User>();
+            var user=request.MapOne<Models.User>();
             user.Otp = OTPHelper.GenerateOtp();
             user.OtpExpiry=OTPHelper.SetOtpExpiry();
 

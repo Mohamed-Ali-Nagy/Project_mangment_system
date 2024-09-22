@@ -7,17 +7,17 @@ using Project_management_system.Repositories;
 
 namespace Project_management_system.CQRS.Users.Queries
 {
-    public record GetUserByEmailQuery(string email) : IRequest<User>
+    public record GetUserByEmailQuery(string email) : IRequest<Models.User>
     {
     }
-    public record GetUserByEmailHandler : IRequestHandler<GetUserByEmailQuery, User>
+    public record GetUserByEmailHandler : IRequestHandler<GetUserByEmailQuery,Models.User>
     {
-        private IBaseRepository<User> _userRepository;
-        public GetUserByEmailHandler(IBaseRepository<User> userRepository)
+        private IBaseRepository<Models.User> _userRepository;
+        public GetUserByEmailHandler(IBaseRepository<Models.User> userRepository)
         {
             _userRepository = userRepository;
         }
-        public async Task<User> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
+        public async Task<Models.User> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Email == request.email);
             if (user == null)

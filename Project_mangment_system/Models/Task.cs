@@ -13,5 +13,9 @@ namespace Project_management_system.Models
         [ForeignKey("User")]
         public int UserID { get; set; }
         public User User { get; set; }
-    }
+
+		public int ProjectId { get; set; }
+		public Project Project { get; set; }
+
+	}
 }

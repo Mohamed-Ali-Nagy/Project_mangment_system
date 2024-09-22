@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Project_management_system.CQRS.User.Commands.Orchestrators;
 using Project_management_system.CQRS.Users.Commands;
 using Project_management_system.Enums;
 using Project_management_system.Helpers;
@@ -60,19 +61,25 @@ namespace Project_management_system.Controllers
             return ResultVM<string>.Sucess(result.Data,"User logged successfully");
         }
 
-        [HttpPost("Register")]
-        public async Task<IActionResult> Register(UserRegisterVM userRegisterVM)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);  
-            }
-            var result=await _mediator.Send(userRegisterVM.MapOne<UserRegisterCommand>());
-            if (!result.IsSuccess)
-            {
-                return Ok(ResultVM<bool>.Faliure(ErrorCode.EmailIsNotUnique,result.Message));
-            }
-            return Ok(ResultVM<bool>.Sucess(true,"Registered successfully"));
-        }
-    }
+		//[HttpPost("Register")]
+		//public async Task<IActionResult> Register(UserRegisterVM userRegisterVM)
+		//{
+		//    if (!ModelState.IsValid)
+		//    {
+		//        return BadRequest(ModelState);  
+		//    }
+		//    var result=await _mediator.Send(userRegisterVM.MapOne<UserRegisterCommand>());
+		//    if (!result.IsSuccess)
+		//    {
+		//        return Ok(ResultVM<bool>.Faliure(ErrorCode.EmailIsNotUnique,result.Message));
+		//    }
+		//    return Ok(ResultVM<bool>.Sucess(true,"Registered successfully"));
+		//}
+		[HttpPost("Register")]
+		public async Task<ActionResult<RegisterAccountOrchestratorToReturnDto>> CreateAccount([FromBody] RegitserAccountOrchestrator command)
+		{
+			var response = await _mediator.Send(command);
+			return Ok(response);
+		}
+	}
 }

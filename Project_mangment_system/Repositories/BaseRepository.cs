@@ -5,6 +5,7 @@ using Project_management_system.CQRS.Users.Commands;
 using Project_management_system.Data;
 using Project_management_system.Data;
 using Project_management_system.Models;
+using Project_management_system.Specification;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -50,6 +51,51 @@ namespace Project_management_system.Repositories
         {
             _context.SaveChanges();
         }
-    }
+
+        public async Task<IEnumerable<T>> GetAsyncWithSpec(Expression<Func<T, bool>> expression)
+		{
+			var query = _context.Set<T>().AsQueryable();
+			query = query.Where(x => !x.IsDeleted);
+			query = query.Where(expression);
+			return await query.ToListAsync();
+		}
+
+		public async System.Threading.Tasks.Task AddAsync(T entity)
+		{
+			await _context.AddAsync(entity);
+		}
+
+		public async Task<int> SaveChangesAsync()
+		{
+			  return await _context.SaveChangesAsync();
+		}
+
+		public async Task<T?> GetByIdAsync(int id)
+		{
+			return await _context.Set<T>().Where(x=>!x.IsDeleted).FirstOrDefaultAsync(x=>x.ID==id);
+		}
+
+		public async Task<int> GetCountWithSpecAsync(IBaseSpecification<T> baseSpecification)
+		{
+		  return await ApplySpecification(baseSpecification).Where(x=>!x.IsDeleted).CountAsync();
+		}
+
+		public async Task<IEnumerable<T>> GetAllWithSpecAsync(IBaseSpecification<T> Spec)
+		{
+			return await ApplySpecification(Spec).Where(x=>!x.IsDeleted).ToListAsync();
+		}
+		private IQueryable<T> ApplySpecification(IBaseSpecification<T> Spec)
+		{
+			return SpecificationEvaluator<T>.GetQuery(_context.Set<T>(), Spec);
+		}
+
+		public async Task<IEnumerable<T>> Get_Async(Expression<Func<T, bool>> expression)
+		{
+			var query = _context.Set<T>().AsQueryable();
+			query = query.Where(x => !x.IsDeleted);
+			query = query.Where(expression);
+			return await query.ToListAsync();
+		}
+	}
 }
 
