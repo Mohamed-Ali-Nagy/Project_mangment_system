@@ -68,14 +68,11 @@ namespace Project_management_system.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("ProjectID")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -85,6 +82,8 @@ namespace Project_management_system.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ProjectID");
 
                     b.HasIndex("UserID");
 
@@ -180,10 +179,8 @@ namespace Project_management_system.Migrations
                     b.HasOne("Project_management_system.Models.User", "User")
                         .WithMany("Tasks")
                         .HasForeignKey("UserID");
-                        .WithMany("Tasks")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+
+                    b.Navigation("Project");
 
                     b.Navigation("User");
                 });
@@ -205,6 +202,13 @@ namespace Project_management_system.Migrations
                     b.Navigation("Project");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Project_management_system.Models.Project", b =>
+                {
+                    b.Navigation("Tasks");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Project_management_system.Models.User", b =>
