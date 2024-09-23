@@ -10,7 +10,7 @@ using Project_management_system;
 using Project_management_system.Data;
 using Project_management_system.Helpers;
 using Project_management_system.Profiles;
-using System.Reflection;
+using System.Diagnostics;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,15 +21,18 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<Context>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+builder.Services.AddDbContext<Context>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+    option.LogTo(log => Debug.WriteLine(log), LogLevel.Information).EnableSensitiveDataLogging();
+});
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterModule(new AutoFacModule()));
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-builder.Services.AddAutoMapper(typeof(UserProfile));
-builder.Services.AddAutoMapper(typeof(ProjectProfile));
-builder.Services.AddAutoMapper(typeof(TaskProfile));
+builder.Services.AddAutoMapper(typeof(UserProfile), typeof(ProjectTaskProfile), typeof(ProjectProfile));
+//builder.Services.AddAutoMapper();
 
 
 builder.Services.AddMediatR(typeof(Program).Assembly);
@@ -53,7 +56,8 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
         ValidAudience = builder.Configuration["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
+        //SigningCredential new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Constants.SecretKey)), SecurityAlgorithms.HmacSha256Signature)
     };
 });
 
@@ -80,10 +84,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization(); 
+
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();

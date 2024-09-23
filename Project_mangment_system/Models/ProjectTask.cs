@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project_management_system.Models
 {
-    public class Task:BaseModel
+    public class ProjectTask : BaseModel
     {
         [Required]
         public string Title { get; set; }
@@ -13,6 +13,7 @@ namespace Project_management_system.Models
         [ForeignKey("User")]
         public int UserID { get; set; }
         public User User { get; set; }
+        [ForeignKey("Project")]
         public int ProjectID { get; set; }
         public Project Project { get; set; }
     }

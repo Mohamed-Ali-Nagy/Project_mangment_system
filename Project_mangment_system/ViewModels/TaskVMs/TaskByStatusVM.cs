@@ -3,6 +3,6 @@
     public class TaskByStatusVM
     {
         public string Status { get; set; }
-        public IEnumerable<TaskVM> TaskVMs { get; set; } 
+        public IEnumerable<ProjectTaskVM> TaskVMs { get; set; } 
     }
 }

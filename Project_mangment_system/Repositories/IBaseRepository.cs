@@ -1,8 +1,5 @@
 ﻿using System.Linq.Expressions;
 
-using Project_management_system.CQRS.Users.Commands;
-using System.Linq.Expressions;
-
 namespace Project_management_system.Repositories
 {
     public interface IBaseRepository<T>

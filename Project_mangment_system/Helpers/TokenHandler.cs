@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Project_management_system.CQRS.Users.Queries;
+using Project_management_system.Enums;
 using Project_management_system.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,15 +14,19 @@ namespace Project_management_system.Helpers
         {
             var authClaims = new List<Claim>
             {
-                 new Claim(ClaimTypes.Name, user.Name),
-                 new Claim(JwtRegisteredClaimNames.Sub,user.ID.ToString()),
+                 
                  // new Claim(ClaimTypes.Role, user.Projects.)
 
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(authClaims),
+                Subject =   new ClaimsIdentity( new  Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Name),
+                 new Claim(JwtRegisteredClaimNames.Sub,user.ID.ToString()),
+                }
+                    ),
                 Expires = DateTime.UtcNow.AddMinutes(Constants.DurationInMinutes),
                 Issuer = Constants.Issuer,
                 Audience = Constants.Audience,

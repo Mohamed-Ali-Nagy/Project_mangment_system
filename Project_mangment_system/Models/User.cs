@@ -20,6 +20,6 @@ namespace Project_management_system.Models
         public string Country { get; set; }
         public bool IsVerified { get; set; }
         public List<ProjectsUsers> Projects { get; set; }
-        public List<Task> Tasks { get; set; }
+        public List<ProjectTask> Tasks { get; set; }
     }
 }
