@@ -18,6 +18,9 @@ namespace Project_management_system.Profiles
             CreateMap<UserRegisterCommand,User>();
             CreateMap<UserRegisterVM,UserRegisterCommand>();
             CreateMap<User,UserListDTO>();
+            CreateMap<UserRegisterCommand, User>();
+            CreateMap<UserRegisterVM, UserRegisterCommand>();
+            CreateMap<ChangePasswordVM, ChangePasswordCommand>();
         }
     }
 }
