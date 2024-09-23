@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Project_management_system.CQRS.Users.Commands;
 using Project_management_system.CQRS.Users.Queries;
 using Project_management_system.Enums;
@@ -32,7 +31,7 @@ namespace Project_management_system.Controllers
         }
 
         [HttpPost("change-password")]
-        [Authorize]
+        //[Authorize]
         public async Task<ResultVM<bool>> ChangePasswordAsync([FromBody] ChangePasswordVM viewModel)
         {
             var command = MapperHelper.MapOne<ChangePasswordCommand>(viewModel);

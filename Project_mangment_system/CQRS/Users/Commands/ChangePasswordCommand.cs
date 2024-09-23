@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Project_management_system.CQRS.Users.Queries;
 using Project_management_system.Enums;
 using Project_management_system.Models;
@@ -11,11 +10,8 @@ namespace Project_management_system.CQRS.Users.Commands
 
     public class ChangePasswordCommandHandler : BaseRequestHandler<User, ChangePasswordCommand, ResultVM<bool>>
     {
-        private readonly IPasswordHasher<User> _passwordHasher;
-
-        public ChangePasswordCommandHandler(RequestParameters<User> requestParameters, IPasswordHasher<User> passwordHasher) : base(requestParameters)
+        public ChangePasswordCommandHandler(RequestParameters<User> requestParameters) : base(requestParameters)
         {
-            _passwordHasher = passwordHasher;
         }
 
         public override async Task<ResultVM<bool>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
@@ -27,11 +23,12 @@ namespace Project_management_system.CQRS.Users.Commands
             if (request.NewPassword != request.ConfirmPassword)
                 return ResultVM<bool>.Faliure(ErrorCode.PasswordDontMatched, "Passwords do not match");
 
-            var result = _passwordHasher.VerifyHashedPassword(user.Data, user.Data.Password, request.OldPassword);
-            if (result == PasswordVerificationResult.Failed)
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(request.OldPassword, user.Data.Password);
+            if (!isPasswordValid)
                 return ResultVM<bool>.Faliure(ErrorCode.WrongOldPassword, "Old password is wrong");
 
-            user.Data.Password = _passwordHasher.HashPassword(user.Data, request.NewPassword);
+            user.Data.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+
             _repository.Update(user.Data);
             _repository.SaveChanges();
             return ResultVM<bool>.Sucess(true, "Password has been changed successfully.");
