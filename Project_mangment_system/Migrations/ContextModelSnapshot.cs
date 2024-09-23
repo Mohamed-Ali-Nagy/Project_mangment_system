@@ -68,6 +68,9 @@ namespace Project_management_system.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("ProjectID")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -75,10 +78,12 @@ namespace Project_management_system.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
+                    b.Property<int?>("UserID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ProjectID");
 
                     b.HasIndex("UserID");
 
@@ -165,11 +170,17 @@ namespace Project_management_system.Migrations
 
             modelBuilder.Entity("Project_management_system.Models.ProjectTask", b =>
                 {
-                    b.HasOne("Project_management_system.Models.User", "User")
+                    b.HasOne("Project_management_system.Models.Project", "Project")
                         .WithMany("Tasks")
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("ProjectID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Project_management_system.Models.User", "User")
+                        .WithMany("Tasks")
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("Project");
 
                     b.Navigation("User");
                 });
@@ -177,7 +188,7 @@ namespace Project_management_system.Migrations
             modelBuilder.Entity("Project_management_system.Models.ProjectsUsers", b =>
                 {
                     b.HasOne("Project_management_system.Models.Project", "Project")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("ProjectID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -191,6 +202,13 @@ namespace Project_management_system.Migrations
                     b.Navigation("Project");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Project_management_system.Models.Project", b =>
+                {
+                    b.Navigation("Tasks");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Project_management_system.Models.User", b =>

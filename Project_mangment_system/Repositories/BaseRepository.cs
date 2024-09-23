@@ -47,6 +47,10 @@ namespace Project_management_system.Repositories
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }  
+        public async Task SaveChangesAsync()
+        {
+           await _context.SaveChangesAsync();
         }
     }
 }

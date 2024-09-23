@@ -11,7 +11,11 @@ namespace Project_management_system.Models
         public Enums.TaskStatus Status { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         [ForeignKey("User")]
-        public int UserID { get; set; }
-        public User User { get; set; }
+        public int? UserID { get; set; }
+        public User? User { get; set; }
+
+        [ForeignKey("Project")]
+        public int ProjectID { get; set; }
+        public Project Project { get; set; }
     }
 }

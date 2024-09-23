@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project_management_system.CQRS.Users.Commands;
+using Project_management_system.CQRS.Users.Queries;
 using Project_management_system.Enums;
 using Project_management_system.Helpers;
 using Project_management_system.ViewModels;
@@ -14,6 +15,12 @@ namespace Project_management_system.Controllers
     {
         public UserController(ControllerParameters controllerParameters) : base(controllerParameters)
         {
+        }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll(int pageNumber,int pageSize)
+        {
+            var users=await mediator.Send(new GetAllUsersQuery(pageNumber, pageSize));
+            return Ok(ResultVM<PaginatedList<UserListDTO>>.Sucess(users));
         }
 
         [HttpPost("reset-password")]
