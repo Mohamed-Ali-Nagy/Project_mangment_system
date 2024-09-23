@@ -18,6 +18,7 @@ namespace Project_management_system.Profiles
             CreateMap<VerifyEmailVM, VerifyOTPCommand>().ReverseMap();
             CreateMap<UserRegisterCommand, User>();
             CreateMap<UserRegisterVM, UserRegisterCommand>();
+            CreateMap<ChangePasswordVM, ChangePasswordCommand>();
         }
     }
 }
