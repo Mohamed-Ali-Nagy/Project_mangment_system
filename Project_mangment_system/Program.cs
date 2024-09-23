@@ -29,6 +29,8 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddAutoMapper(typeof(UserProfile));
 builder.Services.AddAutoMapper(typeof(ProjectProfile));
+builder.Services.AddAutoMapper(typeof(TaskProfile));
+
 
 builder.Services.AddMediatR(typeof(Program).Assembly);
 

@@ -14,14 +14,10 @@ namespace Project_management_system.Helpers
             var authClaims = new List<Claim>
             {
                  new Claim(ClaimTypes.Name, user.Name),
-                  new Claim(JwtRegisteredClaimNames.Sub,user.ID.ToString()),
+                 new Claim(JwtRegisteredClaimNames.Sub,user.ID.ToString()),
+                 // new Claim(ClaimTypes.Role, user.Projects.)
 
             };
-            //foreach (var userRole in user.Roles)
-            //{
-            //    authClaims.Add(new Claim(ClaimTypes.Role, userRole.ToString()));
-            //}
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
