@@ -41,5 +41,16 @@ namespace Project_management_system.Controllers
             }
             return Ok(ResultVM<bool>.Faliure(Enums.ErrorCode.UserNotFound, "invalid user id or task id"));
         }
+
+        [HttpGet("search")]
+        [Authorize]
+        public async Task<ResultVM<IEnumerable<ProjectTaskVM>>> SearchAsync([FromQuery] string text)
+        {
+            var tasks = await mediator.Send(new SearchTasksQuery(text));
+
+            var result = tasks.AsQueryable().Map<ProjectTaskVM>().AsEnumerable();
+
+            return ResultVM<IEnumerable<ProjectTaskVM>>.Sucess(result);
+        }
     }
 }
