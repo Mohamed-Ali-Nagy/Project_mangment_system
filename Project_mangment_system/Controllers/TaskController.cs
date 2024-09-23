@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Project_management_system.CQRS.ProjectUsers.Commands;
 using Project_management_system.CQRS.Tasks.Commands;
 using Project_management_system.CQRS.Tasks.Queries;
 using Project_management_system.Helpers;
@@ -29,6 +30,16 @@ namespace Project_management_system.Controllers
             var result = await mediator.Send(addTaskVM.MapOne<AddTaskCommand>());
             return Ok(ResultVM<bool>.Sucess(true));
 
+        }
+        [HttpPost("AddUserToTask")]
+        public async Task<IActionResult> AddUserToTask(AddUserTaskVM addUserTaskVM)
+        {
+            var result=await mediator.Send(addUserTaskVM.MapOne<AddTaskToUserCommand>());
+            if(result.IsSuccess)
+            {
+                return Ok(ResultVM<bool>.Sucess(true));
+            }
+            return Ok(ResultVM<bool>.Faliure(Enums.ErrorCode.UserNotFound, "invalid user id or task id"));
         }
     }
 }

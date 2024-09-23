@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MailKit.Security;
 using Project_management_system.CQRS.Tasks.Commands;
 using Project_management_system.CQRS.Tasks.Queries;
 using Project_management_system.Models;
@@ -16,6 +17,7 @@ namespace Project_management_system.Profiles
             CreateMap<ProjectTaskDto, ProjectTaskVM>().ReverseMap();
             CreateMap<AddTaskCommand, ProjectTask>();
             CreateMap<AddTaskVM,AddTaskCommand>().ForMember(dst=>dst.CreatedOn,opt=>opt.MapFrom(src=>DateTime.Now));
+            CreateMap<AddUserTaskVM, AddTaskToUserCommand>();
         }
     }
 }
