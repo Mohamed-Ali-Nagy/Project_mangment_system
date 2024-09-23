@@ -19,7 +19,7 @@ namespace Project_management_system.Controllers
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll(int pageNumber,int pageSize)
         {
-            var users=await _mediator.Send(new GetAllUsersQuery(pageNumber, pageSize));
+            var users=await mediator.Send(new GetAllUsersQuery(pageNumber, pageSize));
             return Ok(ResultVM<PaginatedList<UserListDTO>>.Sucess(users));
         }
 
