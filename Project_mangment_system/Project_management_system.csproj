@@ -8,9 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CQRS\Projects\NewFolder1\**" />
+    <Compile Remove="CQRS\Projects\NewFolder\**" />
     <Compile Remove="NewFolder\**" />
+    <Content Remove="CQRS\Projects\NewFolder1\**" />
+    <Content Remove="CQRS\Projects\NewFolder\**" />
     <Content Remove="NewFolder\**" />
+    <EmbeddedResource Remove="CQRS\Projects\NewFolder1\**" />
+    <EmbeddedResource Remove="CQRS\Projects\NewFolder\**" />
     <EmbeddedResource Remove="NewFolder\**" />
+    <None Remove="CQRS\Projects\NewFolder1\**" />
+    <None Remove="CQRS\Projects\NewFolder\**" />
     <None Remove="NewFolder\**" />
   </ItemGroup>
 
@@ -40,9 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CQRS\Projects\NewFolder1\" />
-    <Folder Include="CQRS\Projects\NewFolder\" />
-    <Folder Include="Middelwares\" />
     <Folder Include="Profiles\NewFolder\" />
   </ItemGroup>
 

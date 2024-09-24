@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using MailKit.Security;
+using Project_management_system.CQRS.Tasks.Commands;
 using Project_management_system.CQRS.Tasks.Queries;
 using Project_management_system.Models;
+using Project_management_system.ViewModels.Task;
 using Project_management_system.ViewModels.TaskVMs;
 
 namespace Project_management_system.Profiles
@@ -19,6 +22,9 @@ namespace Project_management_system.Profiles
               .ReverseMap();
             //ProjectTaskDto
             CreateMap<ProjectTaskDto, ProjectTaskVM>().ReverseMap();
+            CreateMap<AddTaskCommand, ProjectTask>();
+            CreateMap<AddTaskVM,AddTaskCommand>().ForMember(dst=>dst.CreatedOn,opt=>opt.MapFrom(src=>DateTime.Now));
+            CreateMap<AddUserTaskVM, AddTaskToUserCommand>();
             CreateMap<ProjectTaskDTO, ProjectTaskVM>().ReverseMap();
     
             CreateMap<IGrouping<Enums.TaskStatus, ProjectTask>, TaskByStatusDTO>()

@@ -1,7 +1,7 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project_management_system.CQRS.Users.Commands;
+using Project_management_system.CQRS.Users.Queries;
 using Project_management_system.Enums;
 using Project_management_system.Helpers;
 using Project_management_system.ViewModels;
@@ -11,13 +11,16 @@ namespace Project_management_system.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public UserController(IMediator mediator)
+        public UserController(ControllerParameters controllerParameters) : base(controllerParameters)
         {
-            _mediator = mediator;
+        }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll(int pageNumber,int pageSize)
+        {
+            var users=await mediator.Send(new GetAllUsersQuery(pageNumber, pageSize));
+            return Ok(ResultVM<PaginatedList<UserListDTO>>.Sucess(users));
         }
 
         [HttpPost("reset-password")]
@@ -25,7 +28,7 @@ namespace Project_management_system.Controllers
         {
             var command = MapperHelper.MapOne<ResetPasswordCommand>(viewModel);
 
-            return await _mediator.Send(command);
+            return await mediator.Send(command);
         }
 
         [HttpPost("change-password")]
@@ -34,16 +37,16 @@ namespace Project_management_system.Controllers
         {
             var command = MapperHelper.MapOne<ChangePasswordCommand>(viewModel);
 
-            return await _mediator.Send(command);
+            return await mediator.Send(command);
         }
 
         [HttpPost("VerifyEmail")]
         public async Task<IActionResult> VerifyEmail(VerifyEmailVM verifyEmailVM)
         {
-            var resultDTO = await _mediator.Send(verifyEmailVM.MapOne<VerifyOTPCommand>());
+            var resultDTO = await mediator.Send(verifyEmailVM.MapOne<VerifyOTPCommand>());
             if (!resultDTO.IsSuccess)
             {
-                return Ok(ResultVM<bool>.Faliure(Enums.ErrorCode.UserEmailNotFound, resultDTO.Message));
+                return Ok(ResultVM<bool>.Faliure(ErrorCode.UserEmailNotFound, resultDTO.Message));
             }
             return Ok(ResultVM<bool>.Sucess(true, "email verified successfully"));
         }
@@ -52,7 +55,7 @@ namespace Project_management_system.Controllers
         [Authorize]
         public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPasswordVM)
         {
-            var result = await _mediator.Send(new ForgetPasswordCommand(forgetPasswordVM.Email));
+            var result = await mediator.Send(new ForgetPasswordCommand(forgetPasswordVM.Email));
             if (!result.IsSuccess)
             {
                 return Ok(ResultVM<bool>.Faliure(ErrorCode.UserEmailNotFound, "Can not send message to this email"));
@@ -63,7 +66,7 @@ namespace Project_management_system.Controllers
         [HttpPost("login")]
         public async Task<ResultVM<string>> UserLogin(UserLoginVM userVM)
         {
-            var result = await _mediator.Send(userVM.MapOne<UserLoginCommand>());
+            var result = await mediator.Send(userVM.MapOne<UserLoginCommand>());
             if (!result.IsSuccess)
             {
                 return ResultVM<string>.Faliure(ErrorCode.WrongPasswordOrEmail, result.Message);
@@ -79,7 +82,7 @@ namespace Project_management_system.Controllers
                 return BadRequest(ModelState);
             }
             var te = userRegisterVM.MapOne<UserRegisterCommand>();
-            var result = await _mediator.Send(userRegisterVM.MapOne<UserRegisterCommand>());
+            var result = await mediator.Send(userRegisterVM.MapOne<UserRegisterCommand>());
             if (!result.IsSuccess)
             {
                 return Ok(ResultVM<bool>.Faliure(ErrorCode.EmailIsNotUnique, result.Message));

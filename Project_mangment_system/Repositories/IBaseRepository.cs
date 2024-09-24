@@ -11,5 +11,8 @@ namespace Project_management_system.Repositories
         void Update(T entity);
         public void Add(T entity);
         void SaveChanges();
+        public  Task SaveChangesAsync();
+        Task<T> GetByID(int id);
+        //T First(Expression<Func<T, bool>> predicate);
     }
 }

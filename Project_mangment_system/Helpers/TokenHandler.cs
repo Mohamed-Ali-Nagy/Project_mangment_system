@@ -1,6 +1,4 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Project_management_system.CQRS.Users.Queries;
-using Project_management_system.Enums;
 using Project_management_system.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,10 +12,15 @@ namespace Project_management_system.Helpers
         {
             var authClaims = new List<Claim>
             {
-                 
-                 // new Claim(ClaimTypes.Role, user.Projects.)
-
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(JwtRegisteredClaimNames.Sub, user.ID.ToString()),
             };
+
+            //foreach (var userRole in user.Roles)
+            //{
+            //    authClaims.Add(new Claim(ClaimTypes.Role, userRole.ToString()));
+            //}
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -31,12 +34,10 @@ namespace Project_management_system.Helpers
                 Issuer = Constants.Issuer,
                 Audience = Constants.Audience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Constants.SecretKey)), SecurityAlgorithms.HmacSha256Signature)
-
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-
     }
 }

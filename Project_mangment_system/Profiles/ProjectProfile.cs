@@ -15,6 +15,9 @@ namespace Project_management_system.Profiles
             CreateMap<CreateProjectOrchestrator, CreateProjectCommand>();
             CreateMap<CreateProjectCommand, Project>().ReverseMap();
             CreateMap<Project, ProjectListDTO>().ReverseMap();
+
+            CreateMap<UpdateProjectVM, UpdateProjectDTO>();
+            CreateMap<UpdateProjectDTO, Project>();
         }
     }
 }

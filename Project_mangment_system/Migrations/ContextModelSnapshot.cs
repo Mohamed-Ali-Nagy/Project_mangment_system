@@ -78,7 +78,7 @@ namespace Project_management_system.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
+                    b.Property<int?>("UserID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -178,9 +178,7 @@ namespace Project_management_system.Migrations
 
                     b.HasOne("Project_management_system.Models.User", "User")
                         .WithMany("Tasks")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
 
                     b.Navigation("Project");
 
