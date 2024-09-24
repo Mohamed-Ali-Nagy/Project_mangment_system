@@ -11,6 +11,7 @@ namespace Project_management_system.Repositories
         void Update(T entity);
         public void Add(T entity);
         void SaveChanges();
+        public void Delete(T entity);
         public  Task SaveChangesAsync();
     }
 }

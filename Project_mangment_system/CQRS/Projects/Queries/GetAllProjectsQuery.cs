@@ -5,7 +5,6 @@ using Project_management_system.Helpers;
 using Project_management_system.Models;
 using Project_management_system.Repositories;
 using Project_management_system.ViewModels;
-using System.Security.Cryptography.Xml;
 
 namespace Project_management_system.CQRS.Projects.Queries
 {

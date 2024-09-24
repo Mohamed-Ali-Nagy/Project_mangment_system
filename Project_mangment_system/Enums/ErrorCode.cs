@@ -14,7 +14,12 @@
 
 
         PasswordDontMatched = 4000,
-        WrongOldPassword
+        WrongOldPassword,
+        //project 5000:6000
+        InvalidProjectID=5000,
 
+
+        //task 6000:7000
+        InvalidTaskId=6000,
     }
 }

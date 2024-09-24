@@ -48,6 +48,11 @@ namespace Project_management_system.Repositories
         {
             _context.SaveChanges();
         }  
+        public void Delete(T entity)
+        {
+            entity.IsDeleted = true;
+            Update(entity);
+        }
         public async Task SaveChangesAsync()
         {
            await _context.SaveChangesAsync();
