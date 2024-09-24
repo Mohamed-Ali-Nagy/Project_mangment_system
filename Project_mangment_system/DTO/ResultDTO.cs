@@ -20,7 +20,7 @@ namespace Project_management_system.DTO
             };
         }
 
-        public static ResultDTO<T> Faliure( string message)
+        public static ResultDTO<T> Faliure(string message)
         {
             return new ResultDTO<T>
             {

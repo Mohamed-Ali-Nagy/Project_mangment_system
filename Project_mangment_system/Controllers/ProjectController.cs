@@ -5,6 +5,7 @@ using Project_management_system.CQRS.Projects.Commands;
 using Project_management_system.CQRS.Projects.Orchestrators;
 using Project_management_system.CQRS.Projects.Queries;
 using Project_management_system.Helpers;
+using Project_management_system.Models;
 using Project_management_system.ViewModels;
 using Project_management_system.ViewModels.ProjectVMs;
 
@@ -47,6 +48,12 @@ namespace Project_management_system.Controllers
             var result = await _mediator.Send(new UpdateProjectCommand(projectDTO, userID));
             return ResultVM<bool>.Sucess(result.Data, result.Message);
         }
+        [HttpDelete("DeleteProject")]
+        public async Task<ResultVM<bool>> DeleteProject(int userID,int projectID)
+        {
+        var result = await _mediator.Send(new DeleteProjectCommand(userID,projectID));
+         return ResultVM<bool>.Sucess(result.Data, result.Message);
+        }
 
-    }
+}
 }
