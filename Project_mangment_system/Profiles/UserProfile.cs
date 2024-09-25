@@ -11,7 +11,7 @@ namespace Project_management_system.Profiles
     {
         public UserProfile()
         {
-            CreateMap<User, UserDTO>();
+           // CreateMap<User, UserDTO>();
             CreateMap<UserLoginVM, UserLoginCommand>();
             CreateMap<ResetPasswordVM, ResetPasswordCommand>().ReverseMap();
             CreateMap<VerifyEmailVM, VerifyOTPCommand>().ReverseMap();
@@ -24,6 +24,7 @@ namespace Project_management_system.Profiles
             CreateMap<UserUpdateVM,UpdateUserCommand>();
             CreateMap<UpdateUserCommand,User>();
 
+            CreateMap<ChangePasswordVM, ChangePasswordCommand>();
         }
     }
 }

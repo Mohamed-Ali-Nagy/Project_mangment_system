@@ -34,7 +34,7 @@ namespace Project_management_system.CQRS.Users.Commands
                 return ResultVM<bool>.Faliure(ErrorCode.InvalidOTP, "Invalid otp or error resetting password.");
             }
 
-            user.Password = _passwordHasher.HashPassword(user, request.NewPassword);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);  //_passwordHasher.HashPassword(user, request.NewPassword);
             user.Otp = null;
             user.OtpExpiry = null;
 

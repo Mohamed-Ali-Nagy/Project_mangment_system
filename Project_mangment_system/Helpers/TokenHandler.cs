@@ -24,7 +24,12 @@ namespace Project_management_system.Helpers
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(authClaims),
+                Subject =   new ClaimsIdentity( new  Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Name),
+                 new Claim(JwtRegisteredClaimNames.Sub,user.ID.ToString()),
+                }
+                    ),
                 Expires = DateTime.UtcNow.AddMinutes(Constants.DurationInMinutes),
                 Issuer = Constants.Issuer,
                 Audience = Constants.Audience,

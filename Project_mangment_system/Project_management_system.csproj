@@ -49,6 +49,7 @@
 
   <ItemGroup>
     <Folder Include="Middelwares\" />
+    <Folder Include="Profiles\NewFolder\" />
   </ItemGroup>
 
 </Project>

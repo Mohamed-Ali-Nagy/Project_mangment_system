@@ -41,7 +41,7 @@ namespace Project_management_system.CQRS.Users.Commands
 
             _repository.Add(user);
             _repository.SaveChanges();
-            // await EmailService.SendEmailAsync(user.Email, user.Name, user.Otp);
+           await EmailService.SendEmailAsync(user.Email, user.Name, user.Otp);
 
             return ResultDTO<bool>.Sucess(true, "User Registered successfully");
         }

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Project_management_system.DTO.UserDTOs;
 
 namespace Project_management_system.Controllers
@@ -7,11 +8,12 @@ namespace Project_management_system.Controllers
     {
         public IMediator Mediator { get; set; }
         public UserState UserState { get; set; }
-
-        public ControllerParameters(IMediator mediator, UserState userState)
+        public IMapper Mapper { get; set; }
+        public ControllerParameters(IMediator mediator, UserState userState, IMapper mapper)
         {
             Mediator = mediator;
             UserState = userState;
+            Mapper = mapper;
         }
     }
 }

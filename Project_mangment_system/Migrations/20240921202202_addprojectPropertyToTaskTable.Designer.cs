@@ -12,12 +12,8 @@ using Project_management_system.Data;
 namespace Project_management_system.Migrations
 {
     [DbContext(typeof(Context))]
-<<<<<<<< HEAD:Project_mangment_system/Migrations/20240924095905_init.Designer.cs
-    [Migration("20240924095905_init")]
-========
-    [Migration("20240923141032_init")]
->>>>>>>> editproject:Project_mangment_system/Migrations/20240923141032_init.Designer.cs
-    partial class init
+    [Migration("20240921202202_addprojectPropertyToTaskTable")]
+    partial class addprojectPropertyToTaskTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,45 +54,6 @@ namespace Project_management_system.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("Project_management_system.Models.ProjectTask", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ProjectID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ProjectID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Tasks");
-                });
-
             modelBuilder.Entity("Project_management_system.Models.ProjectsUsers", b =>
                 {
                     b.Property<int>("ID")
@@ -124,6 +81,45 @@ namespace Project_management_system.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("ProjectsUsers");
+                });
+
+            modelBuilder.Entity("Project_management_system.Models.Task", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProjectID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ProjectID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("Project_management_system.Models.User", b =>
@@ -175,23 +171,6 @@ namespace Project_management_system.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Project_management_system.Models.ProjectTask", b =>
-                {
-                    b.HasOne("Project_management_system.Models.Project", "Project")
-                        .WithMany("Tasks")
-                        .HasForeignKey("ProjectID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Project_management_system.Models.User", "User")
-                        .WithMany("Tasks")
-                        .HasForeignKey("UserID");
-
-                    b.Navigation("Project");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Project_management_system.Models.ProjectsUsers", b =>
                 {
                     b.HasOne("Project_management_system.Models.Project", "Project")
@@ -202,6 +181,25 @@ namespace Project_management_system.Migrations
 
                     b.HasOne("Project_management_system.Models.User", "User")
                         .WithMany("Projects")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Project_management_system.Models.Task", b =>
+                {
+                    b.HasOne("Project_management_system.Models.Project", "Project")
+                        .WithMany("Tasks")
+                        .HasForeignKey("ProjectID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project_management_system.Models.User", "User")
+                        .WithMany("Tasks")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

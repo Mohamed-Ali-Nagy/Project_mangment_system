@@ -14,9 +14,10 @@ namespace Project_management_system.CQRS.Users.Queries
         {
             _userRepository = userRepository;
         }
+       
         public async Task<User> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Email == request.email);
+            var user= await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Email == request.email);
             if (user == null)
             {
                 return null; //throw new BusinessException(ErrorCode.UserEmailNotFound, "Can not find user with this email");

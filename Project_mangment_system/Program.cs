@@ -34,8 +34,9 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterModule(new AutoFacModule()));
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-builder.Services.AddAutoMapper(typeof(UserProfile), typeof(ProjectTaskProfile));
-builder.Services.AddAutoMapper(typeof(ProjectProfile));
+builder.Services.AddAutoMapper(typeof(UserProfile), typeof(ProjectTaskProfile), typeof(ProjectProfile));
+//builder.Services.AddAutoMapper();
+
 
 builder.Services.AddMediatR(typeof(Program).Assembly);
 
@@ -58,7 +59,8 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
         ValidAudience = builder.Configuration["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
+        //SigningCredential new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Constants.SecretKey)), SecurityAlgorithms.HmacSha256Signature)
     };
 });
 
@@ -93,11 +95,27 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
 var app = builder.Build();
 var configuration = app.Services.GetRequiredService<IConfiguration>();
 ConfigHelper.Initialize(configuration);
 app.UseMiddleware<GlobalErrorHandlerMiddleware>();
-
+app.UseMiddleware<TransactionMiddleware>();
 MapperHelper.Mapper = app.Services.GetService<IMapper>();
 var emailSettings = app.Services.GetService<IOptions<EmailSettings>>();
 EmailService._mailSettings = emailSettings.Value;
@@ -112,10 +130,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
+
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();

@@ -57,6 +57,15 @@ namespace Project_management_system.Repositories
         {
            await _context.SaveChangesAsync();
         }
+        }  
+        public async Task SaveChangesAsync()
+        {
+           await _context.SaveChangesAsync();
+        }
+        public async Task<T>  GetByID(int id)
+        {
+            return await GetAll().FirstOrDefaultAsync(x => x.ID == id);
+        }
     }
 }
 

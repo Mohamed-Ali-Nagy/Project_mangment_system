@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Project_management_system.CQRS.Projects.Commands;
 using Project_management_system.CQRS.Projects.Orchestrators;
 using Project_management_system.CQRS.Projects.Queries;
 using Project_management_system.Helpers;
@@ -29,10 +31,20 @@ namespace Project_management_system.Controllers
             }
             return Ok(ResultVM<PaginatedList<ProjectListDTO>>.Sucess(result.Data,""));
         }
+
         [HttpPost("CreateProject")]
+        [Authorize]
         public async Task<ResultVM<bool>> CreateProject(CreateProjectVM projectVM)
         {
             var result = await _mediator.Send(projectVM.MapOne<CreateProjectOrchestrator>());
+            return ResultVM<bool>.Sucess(result.Data, result.Message);
+        }
+
+        [HttpPut("UpdateProject")]
+        public async Task<ResultVM<bool>> UpdateProject(UpdateProjectVM projectVM ,int userID)
+        {
+            var projectDTO = projectVM.MapOne<UpdateProjectDTO>();
+            var result = await _mediator.Send(new UpdateProjectCommand(projectDTO, userID));
             return ResultVM<bool>.Sucess(result.Data, result.Message);
         }
 

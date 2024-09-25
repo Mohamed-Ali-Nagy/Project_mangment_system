@@ -52,6 +52,7 @@ namespace Project_management_system.Controllers
         }
 
         [HttpPost("ForgetPassword")]
+        [Authorize]
         public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPasswordVM)
         {
             var result = await mediator.Send(new ForgetPasswordCommand(forgetPasswordVM.Email));
