@@ -62,6 +62,12 @@ namespace Project_management_system.Repositories
         {
             return await GetAll().FirstOrDefaultAsync(x => x.ID == id);
         }
+        public async Task Delete(int id)
+        {
+            var entity = await GetByID( id);
+            entity.IsDeleted = true;
+            Update(entity);
+        }
     }
 
 

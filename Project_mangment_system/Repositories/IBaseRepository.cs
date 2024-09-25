@@ -15,6 +15,7 @@ namespace Project_management_system.Repositories
         public  Task SaveChangesAsync();
        
         Task<T> GetByID(int id);
+        Task Delete(int id);
         //T First(Expression<Func<T, bool>> predicate);
     }
 }
