@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project_management_system.CQRS.Users.Commands;
 using Project_management_system.CQRS.Users.Queries;
 using Project_management_system.Enums;
@@ -31,7 +32,7 @@ namespace Project_management_system.Controllers
         }
 
         [HttpPost("change-password")]
-        //[Authorize]
+        [Authorize]
         public async Task<ResultVM<bool>> ChangePasswordAsync([FromBody] ChangePasswordVM viewModel)
         {
             var command = MapperHelper.MapOne<ChangePasswordCommand>(viewModel);
@@ -45,7 +46,7 @@ namespace Project_management_system.Controllers
             var resultDTO = await mediator.Send(verifyEmailVM.MapOne<VerifyOTPCommand>());
             if (!resultDTO.IsSuccess)
             {
-                return Ok(ResultVM<bool>.Faliure(Enums.ErrorCode.UserEmailNotFound, resultDTO.Message));
+                return Ok(ResultVM<bool>.Faliure(ErrorCode.UserEmailNotFound, resultDTO.Message));
             }
             return Ok(ResultVM<bool>.Sucess(true, "email verified successfully"));
         }
