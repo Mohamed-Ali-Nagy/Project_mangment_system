@@ -16,9 +16,9 @@ namespace Project_management_system.Controllers
         {
         }
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll(int pageNumber,int pageSize)
+        public async Task<IActionResult> GetAll(int pageNumber, int pageSize)
         {
-            var users=await mediator.Send(new GetAllUsersQuery(pageNumber, pageSize));
+            var users = await mediator.Send(new GetAllUsersQuery(pageNumber, pageSize));
             return Ok(ResultVM<PaginatedList<UserListDTO>>.Sucess(users));
         }
 
@@ -88,6 +88,27 @@ namespace Project_management_system.Controllers
             return Ok(ResultVM<bool>.Sucess(true, "Registered successfully"));
         }
 
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await mediator.Send(new DeleteUserCommand(id));
+            if (!result.IsSuccess)
+            {
+                return Ok(ResultVM<bool>.Faliure(ErrorCode.UserNotFound, result.Message));
+            }
 
+            return Ok(ResultVM<bool>.Sucess(true));
+        }
+
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update(UserUpdateVM userUpdateVM)
+        {
+            var result=await mediator.Send(userUpdateVM.MapOne<UpdateUserCommand>());
+            if (!result.IsSuccess)
+            {
+                return Ok(ResultVM<bool>.Faliure(ErrorCode.UserNotFound, result.Message));
+            }
+            return Ok(ResultVM<bool>.Sucess(true));
+        }
     }
 }
