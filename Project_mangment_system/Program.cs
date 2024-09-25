@@ -64,8 +64,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -95,7 +93,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-    
 
 var app = builder.Build();
 var configuration = app.Services.GetRequiredService<IConfiguration>();

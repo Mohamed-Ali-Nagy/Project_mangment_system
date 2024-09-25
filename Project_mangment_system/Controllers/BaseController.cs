@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Project_management_system.DTO.UserDTOs;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Project_management_system.Controllers
@@ -17,18 +16,16 @@ namespace Project_management_system.Controllers
         {
             mediator = controllerParameters.Mediator;
             userState = controllerParameters.UserState;
-            GetUserState();
         }
 
-        private void GetUserState()
+        protected void SetUserState()
         {
-            if (HttpContext is not null)
-            {
-                string userId = HttpContext.User?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? "";
-                if (!string.IsNullOrEmpty(userId))
-                    userState.Id = int.Parse(userId);
-                userState.Name = HttpContext.User?.FindFirst(ClaimTypes.Name)?.Value ?? "";
-            }
+            var userId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!string.IsNullOrEmpty(userId))
+                userState.Id = int.Parse(userId);
+
+            userState.Name = User?.FindFirst(ClaimTypes.Name)?.Value ?? "";
         }
     }
 }

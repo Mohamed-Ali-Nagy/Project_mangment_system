@@ -2,10 +2,9 @@
 using Project_management_system.CQRS.Users.Queries;
 using Project_management_system.DTO;
 using Project_management_system.Helpers;
-using Project_management_system.Models;
 namespace Project_management_system.CQRS.Users.Commands
 {
-    public record UserLoginCommand(string email,string password) : IRequest<ResultDTO<string>>;
+    public record UserLoginCommand(string email, string password) : IRequest<ResultDTO<string>>;
     public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, ResultDTO<string>>
     {
         private readonly IMediator _mediator;
@@ -19,11 +18,11 @@ namespace Project_management_system.CQRS.Users.Commands
             var result = BCrypt.Net.BCrypt.Verify(request.password, user.Password);
             if (user != null && result && user.IsVerified == true)
             {
-                return  ResultDTO<string>.Sucess( TokenHandler.GenerateToken(user));
+                return ResultDTO<string>.Sucess(TokenHandler.GenerateToken(user));
             }
             else
             {
-                return ResultDTO<string>.Faliure("Wrong Password or Email") ;
+                return ResultDTO<string>.Faliure("Wrong Password or Email");
             }
         }
     }

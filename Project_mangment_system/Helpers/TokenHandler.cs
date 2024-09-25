@@ -16,6 +16,7 @@ namespace Project_management_system.Helpers
                 new Claim(JwtRegisteredClaimNames.Sub, user.ID.ToString()),
             };
 
+
             //foreach (var userRole in user.Roles)
             //{
             //    authClaims.Add(new Claim(ClaimTypes.Role, userRole.ToString()));
@@ -24,7 +25,7 @@ namespace Project_management_system.Helpers
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject =   new ClaimsIdentity( new  Claim[]
+                Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Name),
                  new Claim(JwtRegisteredClaimNames.Sub,user.ID.ToString()),

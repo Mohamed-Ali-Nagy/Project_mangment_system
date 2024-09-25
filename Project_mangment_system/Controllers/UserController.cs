@@ -35,6 +35,8 @@ namespace Project_management_system.Controllers
         [Authorize]
         public async Task<ResultVM<bool>> ChangePasswordAsync([FromBody] ChangePasswordVM viewModel)
         {
+            SetUserState();
+
             var command = MapperHelper.MapOne<ChangePasswordCommand>(viewModel);
 
             return await mediator.Send(command);
@@ -105,7 +107,7 @@ namespace Project_management_system.Controllers
         [HttpPut("Update")]
         public async Task<IActionResult> Update(UserUpdateVM userUpdateVM)
         {
-            var result=await mediator.Send(userUpdateVM.MapOne<UpdateUserCommand>());
+            var result = await mediator.Send(userUpdateVM.MapOne<UpdateUserCommand>());
             if (!result.IsSuccess)
             {
                 return Ok(ResultVM<bool>.Faliure(ErrorCode.UserNotFound, result.Message));
