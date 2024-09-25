@@ -13,7 +13,7 @@ namespace Project_management_system.Repositories
         void SaveChanges();
         public void Delete(T entity);
         public  Task SaveChangesAsync();
-        public  Task SaveChangesAsync();
+       
         Task<T> GetByID(int id);
         //T First(Expression<Func<T, bool>> predicate);
     }
