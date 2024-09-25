@@ -34,7 +34,7 @@ namespace Project_management_system.Controllers
         }
 
         [HttpPost("CreateProject")]
-        [Authorize]
+        //[Authorize]
         public async Task<ResultVM<bool>> CreateProject(CreateProjectVM projectVM)
         {
             var result = await _mediator.Send(projectVM.MapOne<CreateProjectOrchestrator>());

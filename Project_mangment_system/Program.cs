@@ -100,8 +100,10 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 var configuration = app.Services.GetRequiredService<IConfiguration>();
 ConfigHelper.Initialize(configuration);
+
 app.UseMiddleware<GlobalErrorHandlerMiddleware>();
 app.UseMiddleware<TransactionMiddleware>();
+
 MapperHelper.Mapper = app.Services.GetService<IMapper>();
 var emailSettings = app.Services.GetService<IOptions<EmailSettings>>();
 EmailService._mailSettings = emailSettings.Value;

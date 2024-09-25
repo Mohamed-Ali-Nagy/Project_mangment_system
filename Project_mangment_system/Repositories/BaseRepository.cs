@@ -21,7 +21,8 @@ namespace Project_management_system.Repositories
         public async Task<T> GetAsync(Expression<Func<T, bool>> predicate)
         {
             return await GetAll().FirstOrDefaultAsync(predicate);
-        }
+        }    
+
 
         public async Task<TResult> GetAsyncWithProjectTo<TResult>(Expression<Func<TResult, bool>> predicate)
         {

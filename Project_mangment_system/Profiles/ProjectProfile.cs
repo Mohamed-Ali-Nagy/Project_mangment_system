@@ -14,7 +14,8 @@ namespace Project_management_system.Profiles
             CreateMap<CreateProjectVM, CreateProjectOrchestrator>();
             CreateMap<CreateProjectOrchestrator, CreateProjectCommand>();
             CreateMap<CreateProjectCommand, Project>().ReverseMap();
-            CreateMap<Project, ProjectListDTO>().ReverseMap();
+            CreateMap<Project, ProjectListDTO>().ForMember(dest=>dest.NumberOfTasks,opt=>opt.MapFrom(src=>src.Tasks.Count))
+                                                 .ForMember(dst=>dst.NumberOfUsers,opt=>opt.MapFrom(src=>src.Users.Count));
 
             CreateMap<UpdateProjectVM, UpdateProjectDTO>();
             CreateMap<UpdateProjectDTO, Project>();

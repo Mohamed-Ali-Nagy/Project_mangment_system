@@ -40,8 +40,9 @@ namespace Project_management_system.CQRS.Users.Commands
             user.OtpExpiry = OTPHelper.SetOtpExpiry();
 
             _repository.Add(user);
+
+            await EmailService.SendEmailAsync(user.Email, user.Name, user.Otp);
             _repository.SaveChanges();
-           await EmailService.SendEmailAsync(user.Email, user.Name, user.Otp);
 
             return ResultDTO<bool>.Sucess(true, "User Registered successfully");
         }

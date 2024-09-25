@@ -9,6 +9,6 @@ namespace Project_management_system.ViewModels.Task
         public string Title { get; set; }
         public string? Description { get; set; }
         public Enums.TaskStatus Status { get; set; }
-        public int? UserID { get; set; }
+       
     }
 }
